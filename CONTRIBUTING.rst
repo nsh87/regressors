@@ -58,19 +58,20 @@ Get Started!
 Ready to contribute? Here's how to set up `regressors` for local development.
 
 1. Fork the `regressors` repo on GitHub.
-2. Clone your fork locally::
+2. Clone your fork locally, then add the original repository as an upstream::
 
     $ git clone git@github.com:your_name_here/regressors.git
+    $ cd regressors
+    $ git remote add upstream https://github.com/nsh87/regressors
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
-    $ mkvirtualenv regressors
-    $ cd regressors/
+    $ mkvirtualenv -r requirements_dev regressors
     $ python setup.py develop
 
-4. Create a branch for local development::
+4. Create a branch for local development, branching off of `dev`::
 
-    $ git checkout -b name-of-your-bugfix-or-feature
+    $ git checkout -b name-of-your-bugfix-or-feature dev
 
    Now you can make your changes locally.
 
@@ -80,7 +81,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
     $ python setup.py test
     $ tox
 
-   To get flake8 and tox, just pip install them into your virtualenv.
+   flake8 and tox will have been installed when you created the virtualenv above.
 
 6. Commit your changes and push your branch to GitHub::
 
@@ -88,7 +89,17 @@ Ready to contribute? Here's how to set up `regressors` for local development.
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-7. Submit a pull request through the GitHub website.
+    Write sensible commit message: read [this post](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) and [this one](http://chris.beams.io/posts/git-commit/) before writing a single commit.
+
+7. Submit a pull request through the GitHub website to merge your feature to branch `dev`. To ensure your pull request can be automatically merged, play your commits on top of the most recent `dev` branch.
+
+    $ git fetch upstream
+    $ git checkout dev
+    $ git merge upstream/dev
+    $ git checkout name-of-your-bugfix-or-feature
+    $ git rebase dev
+
+    This will pull the latest changes from the main repository and let you take care of resolving any merge conflicts that might arise in order for your pull request to be merged.
 
 Pull Request Guidelines
 -----------------------
