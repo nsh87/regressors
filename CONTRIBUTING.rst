@@ -92,9 +92,9 @@ Ready to contribute? Here's how to set up `regressors` for local development.
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-    Write sensible commit message: read [this post](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) and [this one](http://chris.beams.io/posts/git-commit/) before writing a single commit.
+   Write sensible commit message: read [this post](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) and [this one](http://chris.beams.io/posts/git-commit/) before writing a single commit.
 
-7. Submit a pull request through the GitHub website to merge your feature to branch `dev`. To ensure your pull request can be automatically merged, play your commits on top of the most recent `dev` branch.
+7. Submit a pull request through the GitHub website to merge your feature to branch `dev`. To ensure your pull request can be automatically merged, play your commits on top of the most recent `dev` branch::
 
     $ git fetch upstream
     $ git checkout dev
@@ -102,7 +102,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
     $ git checkout name-of-your-bugfix-or-feature
     $ git rebase dev
 
-    This will pull the latest changes from the main repository and let you take care of resolving any merge conflicts that might arise in order for your pull request to be merged.
+   This will pull the latest changes from the main repository and let you take care of resolving any merge conflicts that might arise in order for your pull request to be merged.
 
 Pull Request Guidelines
 -----------------------
