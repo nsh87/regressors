@@ -77,11 +77,14 @@ Ready to contribute? Here's how to set up `regressors` for local development.
 
 5. When you're done making changes, check that your changes pass flake8 and the tests, including testing other Python versions with tox::
 
-    $ flake8 regressors tests
-    $ python setup.py test
-    $ tox
+    $ flake8 regressors tests  # Check Python syntax
+    $ python setup.py test  # Run unittest tests
+    $ tox  # Run unittests and check compatibility on Python 2.6, 2.7, 3.3-5
 
    flake8 and tox will have been installed when you created the virtualenv above.
+
+   In order to fully support tox, you will need to have Python 2.6, 2.7, 3.3, 3.4, and 3.5 available on your system. If you're using Mac OS X you can follow this [guide](http://ishcray.com/supporting-multiple-python-versions-with-tox) to cleanly install multiple Python versions.
+   If you are not able to get all tox environments working, that's fine, but take heed that a pull request that has not been tested against all Python versions might be rejected if it is not compatible with a specific version. You should try your best to get the `tox` command working so you can verify your code and tests against multiple Python versions.
 
 6. Commit your changes and push your branch to GitHub::
 
