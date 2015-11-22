@@ -247,7 +247,7 @@ latex_documents = [
 man_pages = [
     ('index', 'regressors',
      u'Regressors Documentation',
-     [u'Nikhil Haas'], 1)
+     [u'Nikhil Haas', u'Ghizlaine Bennani', u'Alex Romriell'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -279,3 +279,7 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
+
+# Napoleon settings
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
