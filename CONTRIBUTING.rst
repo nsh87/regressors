@@ -83,7 +83,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
 
    flake8 and tox will have been installed when you created the virtualenv above.
 
-   In order to fully support tox, you will need to have Python 2.6, 2.7, 3.3, 3.4, and 3.5 available on your system. If you're using Mac OS X you can follow this [guide](http://ishcray.com/supporting-multiple-python-versions-with-tox) to cleanly install multiple Python versions.
+   In order to fully support tox, you will need to have Python 2.6, 2.7, 3.3, 3.4, and 3.5 available on your system. If you're using Mac OS X you can follow this `guide <http://ishcray.com/supporting-multiple-python-versions-with-tox>`_ to cleanly install multiple Python versions.
    If you are not able to get all tox environments working, that's fine, but take heed that a pull request that has not been tested against all Python versions might be rejected if it is not compatible with a specific version. You should try your best to get the `tox` command working so you can verify your code and tests against multiple Python versions.
 
 6. Commit your changes and push your branch to GitHub::
@@ -92,7 +92,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
     $ git commit -m "Your detailed description of your changes."
     $ git push origin name-of-your-bugfix-or-feature
 
-   Write sensible commit message: read [this post](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html) and [this one](http://chris.beams.io/posts/git-commit/) before writing a single commit.
+   Write sensible commit message: read `this post <http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html>`_ and `this one <http://chris.beams.io/posts/git-commit/>`_ before writing a single commit.
 
 7. Submit a pull request through the GitHub website to merge your feature to branch `dev`. To ensure your pull request can be automatically merged, play your commits on top of the most recent `dev` branch::
 
