@@ -6,6 +6,8 @@ Development Lead
 ----------------
 
 * Nikhil Haas <nikhil@nikhilhaas.com>
+* Ghizlaine Bennani
+* Alex Romriell
 
 Contributors
 ------------
