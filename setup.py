@@ -28,7 +28,8 @@ test_requirements = [
 setup(
     name='regressors',
     version='0.0.99',
-    description="Easy utilities for fitting various regressors, extracting stats, and making relevant plots",
+    description="Easy utilities for fitting various regressors, extracting "
+                "stats, and making relevant plots",
     long_description=readme + '\n\n' + history,
     author="Nikhil Haas",
     author_email='nikhil@nikhilhaas.com',
@@ -42,7 +43,8 @@ setup(
     install_requires=requirements,
     license="ISCL",
     zip_safe=False,
-    keywords='regressors',
+    keywords='regression, lasso, ridge, principle components regression, '
+             'elastic net, linear model',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Intended Audience :: Developers',
@@ -56,5 +58,6 @@ setup(
         'Programming Language :: Python :: 3.4',
     ],
     test_suite='tests',
-    tests_require=test_requirements
+    tests_require=test_requirements,
+    use_2to3=True
 )
