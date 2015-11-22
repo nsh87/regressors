@@ -16,9 +16,11 @@ with open('HISTORY.rst') as history_file:
 
 requirements = [
     'numpy',
-    'scikit-learn',
+    'scipy',
     'matplotlib',
+    'scikit-learn',
     'seaborn',
+    'pandas',
 ]
 
 test_requirements = [
