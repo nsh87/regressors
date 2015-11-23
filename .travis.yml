@@ -8,6 +8,15 @@ python:
   - "3.5"
   - "pypy"
   - "pypy3"
+matrix:
+  include:
+    - python: 2.7
+      env: TESTENV=docs
+  exclue:
+    - python: 2.6
+    - python: 3.3
+    - python: 3.4
+    - python: 3.5
 install:
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -31,9 +40,14 @@ install:
   - source activate test-environment
   - pip install -U pip
   - pip install -U wheel
-  - pip install -U scikit-learn seaborn unittest2 coverage
-  - python setup.py install
-script: python setup.py test
+  - pip install -U scikit-learn seaborn unittest2 coverage sphinx tox
+  - python setup.py install;
+script:
+  - if [[ "$TESTENV" != "docs" ]]; then
+      python setup.py test;
+    else
+      cd docs && sphinx-build -W -T -b html . ../html;
+    fi
 deploy:
   true:
     condition: $TRAVIS_PYTHON_VERSION == "2.7"
