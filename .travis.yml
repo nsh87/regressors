@@ -40,7 +40,7 @@ install:
   - source activate test-environment
   - pip install -U pip
   - pip install -U wheel
-  - pip install -U scikit-learn seaborn unittest2 coverage sphinx
+  - pip install -U scikit-learn seaborn unittest2 coverage sphinx tox
   - if [[ "$TOXENV" != "docs" ]]; then
       python setup.py install;
     fi
