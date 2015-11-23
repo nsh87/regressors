@@ -40,9 +40,16 @@ install:
   - source activate test-environment
   - pip install -U pip
   - pip install -U wheel
-  - pip install -U scikit-learn seaborn unittest2 coverage
-  - python setup.py install
-script: python setup.py test
+  - pip install -U scikit-learn seaborn unittest2 coverage sphinx
+  - if [[ "$TESTENV" != "docs" ]]; then
+      python setup.py install;
+    fi
+script:
+  - if [[ "$TOXENV" != "docs" ]]; then
+      python setup.py test;
+    else
+      tox;
+    fi
 deploy:
   true:
     condition: $TRAVIS_PYTHON_VERSION == "2.7"
