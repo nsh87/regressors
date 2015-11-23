@@ -10,6 +10,7 @@ python:
 before_install:
   - pip install -U pip
 install:
+  - echo $TRAVIS_PYTHON_VERSION
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
     else
@@ -22,9 +23,11 @@ install:
   - conda update -q conda
   # Useful for debugging any issues with conda
   - conda info -a
-  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pandas scikit-learn
+  - conda create -q -n test-environment python=$TRAVIS_PYTHON_VERSION numpy scipy matplotlib pandas
   - source activate test-environment
-  - pip install -U seaborn unittest2 coverage
+  - pip install -U pip
+  - pip install -U wheel
+  - pip install -U scikit-learn seaborn unittest2 coverage
   - python setup.py install
 script: python setup.py test
 deploy:
