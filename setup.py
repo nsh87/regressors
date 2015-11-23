@@ -25,6 +25,8 @@ requirements = [
 
 test_requirements = [
     'unittest2',
+    'sphinx',
+    'sphinx_rtd_theme',
 ]
 
 setup(
