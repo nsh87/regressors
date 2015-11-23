@@ -11,7 +11,7 @@ python:
 matrix:
   include:
     - python: 2.7
-      env: TOX_ENV=docs
+      env: TOXENV=docs
   exclue:
     - python: 2.6
     - python: 3.3
