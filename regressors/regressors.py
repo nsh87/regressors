@@ -21,6 +21,14 @@ class LinearRegression(linear_model.LinearRegression):
         self.xlabels = None
 
     def fit(self, *args, **kwargs):
+        """Hijacks :py:class:`skleanr.linear_model.LinearRegression` to accept
+        an extra parameter _xlabels_.
+
+        Parameters
+        ----------
+        xlabels : list, tuple, numpy.ndarray
+            Optional labels for the coefficients, corresponding to columns of X.
+        """
         # Try to get xlabels from *args or **kwargs
         xlabels = kwargs.get('xlabels')  # Get xlabels or None if not in kwargs
         if xlabels is None:
@@ -55,14 +63,8 @@ class LinearRegression(linear_model.LinearRegression):
         super(LinearRegression, self).fit(*args, **kwargs)
 
 
-    def summary(self, xlabels=None):
-        """Return summary results of fitted model.
-
-        Parameters
-        ----------
-        xlabels : list, tuple, numpy.ndarray
-            Optional labels for the coefficients, corresponding to columns of X.
-        """
+    def summary(self):
+        """Return summary results of fitted model."""
         coeffs = np.concatenate((np.array([self.intercept_]), self.coef_))
         labels = np.concatenate((np.array(['_intercept']), self.xlabels))
         summary = {'coef': pd.Series(coeffs, index=labels)}
