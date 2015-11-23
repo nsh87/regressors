@@ -13,7 +13,7 @@ Regressors
         :alt: Documentation Status
 
 
-Easy utilizies for fitting various regressors, extracting stats, and making relevant plots
+Easy utilities for fitting various regressors, extracting stats, and making relevant plots
 
 * Free software: ISC license
 * Documentation: https://regressors.readthedocs.org.
