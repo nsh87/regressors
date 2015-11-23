@@ -46,8 +46,8 @@ class LinearRegression(linear_model.LinearRegression):
         elif isinstance(xlabels, (tuple, list)):
             xlabels = np.array(xlabels, dtype='str')
         # Make sure dims of xlabels matches dims of X
-        if len(xlabels) != ncols:
-            raise IndexError(
+        if xlabels.shape[0] != ncols:
+            raise AssertionError(
                 "Dimension of xlabels {0} does not match "
                 "X {1}.".format(xlabels.shape, X.shape))
         self.xlabels = xlabels

@@ -76,9 +76,24 @@ class TestLinearRegression(unittest.TestCase):
             self.fail("Fitting with xlabels with all parameters as "
                       "**kwargs raised unexpected exception: {0}".format(e))
 
+    def test_LinearRegression_fit_with_xlabels_out_of_position_kwargs(self):
+        ols = regressors.LinearRegression()
+        labels = ['LABEL{0}'.format(i) for i in range(self.X.shape[1])]
+        try:
+            ols.fit(X=self.X, xlabels=labels, y=self.y)
+        except Exception as e:
+            self.fail("Fitting with xlabels with all parameters as "
+                      "**kwargs raised unexpected exception: {0}".format(e))
+
+    def test_LinearRegression_fit_with_xlabels_args_out_of_pos_args_fails(self):
+        ols = regressors.LinearRegression()
+        labels = ['LABEL{0}'.format(i) for i in range(self.X.shape[1])]
+        with self.assertRaises(AssertionError):
+            ols.fit(self.X, labels, self.y)
+
     def test_LinearRegression_xlabel_dimensions_error_checking(self):
         ols = regressors.LinearRegression()
-        with self.assertRaises(IndexError):
+        with self.assertRaises(AssertionError):
             ols.fit(self.X, self.y, xlabels=['LABEL1', 'LABEL2'])
 
     def test_LinearRegression_summary(self):
@@ -92,9 +107,6 @@ class TestLinearRegression(unittest.TestCase):
         except Exception as e:
             self.fail("str(summary) raised "
                       "exception unexpectedly: {0}".format(e))
-
-
-
 
 if __name__ == '__main__':
     import sys
