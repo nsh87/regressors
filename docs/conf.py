@@ -15,6 +15,8 @@
 
 import sys
 import os
+import sphinx.environment
+from docutils.utils import get_source_line
 
 # If extensions (or modules to document with autodoc) are in another
 # directory, add these directories to sys.path here. If the directory is
@@ -117,7 +119,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'classic'
 
 # Theme options are theme-specific and customize the look and feel of a
 # theme further.  For a list of options available for each theme, see the
@@ -283,3 +285,9 @@ texinfo_documents = [
 # Napoleon settings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
+
+# Ignore warnings about GitHub PyPi/Coverage shields being nonlocal image URIs
+def _warn_node(self, msg, node):
+    if not msg.startswith('nonlocal image URI found:'):
+        self._warnfunc(msg, '%s:%s' % get_source_line(node))
+sphinx.environment.BuildEnvironment.warn_node = _warn_node
