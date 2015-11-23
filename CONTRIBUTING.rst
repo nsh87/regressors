@@ -68,6 +68,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
 
     $ pip install virtualenv virtualenvwrapper
     $ mkvirtualenv -r requirements_dev.txt regressors
+    $ pip install numpy scipy
     $ python setup.py develop
 
 4. Create a branch for local development, branching off of `dev`::
