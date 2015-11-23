@@ -38,7 +38,7 @@ script:
   - if [[ "$TESTENV" != "docs" ]]; then
       python setup.py test;
     else
-      cd docs && sphinx-build -W -T -b html -d ../doctrees . ../html
+      cd docs && sphinx-build -W -T -b html . ../html;
     fi
 deploy:
   true:
