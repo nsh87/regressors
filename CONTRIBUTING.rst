@@ -66,6 +66,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
 
 3. Install your local copy into a virtualenv. Assuming you have virtualenvwrapper installed, this is how you set up your fork for local development::
 
+    $ pip install virtualenv virtualenvwrapper
     $ mkvirtualenv -r requirements_dev.txt regressors
     $ python setup.py develop
 
@@ -85,7 +86,7 @@ Ready to contribute? Here's how to set up `regressors` for local development.
 
    In order to fully support tox, you will need to have Python 2.6, 2.7, 3.3, 3.4, and 3.5 available on your system. If you're using Mac OS X you can follow this `guide <http://ishcray.com/supporting-multiple-python-versions-with-tox>`_ to cleanly install multiple Python versions.
 
-   If you are not able to get all tox environments working, that's fine, but take heed that a pull request that has not been tested against all Python versions might be rejected if it is not compatible with a specific version. You should try your best to get the ``tox`` command working so you can verify your code and tests against multiple Python versions.
+   If you are not able to get all tox environments working, that's fine, but take heed that a pull request that has not been tested against all Python versions might be rejected if it is not compatible with a specific version. You should try your best to get the ``tox`` command working so you can verify your code and tests against multiple Python versions. You should check Travis CI in lieu once your pull request has been submitted.
 
 6. Commit your changes and push your branch to GitHub::
 
