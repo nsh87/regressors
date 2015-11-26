@@ -71,3 +71,10 @@ class LinearRegression(linear_model.LinearRegression):
         summary = {'coef': pd.Series(coeffs, index=labels)}
         df = pd.DataFrame(summary)
         return df
+
+
+def summary(clf, X_train, y_train):
+    sse = stats.sse(clf, X_train, y_train)
+
+    # Put into pandas data frame
+    return df
