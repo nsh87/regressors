@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 from sklearn import linear_model
 import numpy as np
 import pandas as pd
+from regressors import stats
 
 
 class LinearRegression(linear_model.LinearRegression):
