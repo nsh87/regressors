@@ -15,10 +15,10 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read().replace('.. :changelog:', '')
 
 requirements = [
-    'numpy',
-    'scipy',
+    'numpy>=1.6.1',
+    'scipy>=0.9',
     'matplotlib',
-    'scikit-learn',
+    'scikit-learn>=0.17',
     'seaborn',
     'pandas',
 ]
@@ -31,7 +31,7 @@ test_requirements = [
 
 setup(
     name='regressors',
-    version='0.0.99',
+    version='0.0.1',
     description="Easy utilities for fitting various regressors, extracting "
                 "stats, and making relevant plots",
     long_description=readme + '\n\n' + history,
