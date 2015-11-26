@@ -14,6 +14,8 @@ from __future__ import unicode_literals
 
 import unittest2 as unittest
 from sklearn import datasets
+from sklearn import linear_model as lm
+from sklearn import naive_bayes
 import pandas as pd
 import numpy as np
 
@@ -110,6 +112,29 @@ class TestLinearRegression(unittest.TestCase):
         except Exception as e:
             self.fail("str(summary) raised "
                       "exception unexpectedly: {0}".format(e))
+
+
+class TestStats_Residuals(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_classifier_type_assertion(self):
+        # Test that assertion is raised for unsupported model
+        nb = naive_bayes.GaussianNB()
+        with self.assertRaises(AssertionError):
+            stats.residuals(nb, X, y)
+        # Test that assertion is not raise for supported models
+        for clf in stats.supported_linear_models:
+            try:
+                stats.residuals(clf(), X, y)
+            except Exception as e:
+                self.fail("Testing supported linear models in residuals "
+                          "function failed unexpectedly: {0}".format(e))
+
 
 if __name__ == '__main__':
     import sys
