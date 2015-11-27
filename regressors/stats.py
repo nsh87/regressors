@@ -6,39 +6,51 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from sklearn import linear_model as lm
-import seaborn.apionly as sns
 import numpy as np
-import matplotlib._pyplot as plt
-
-supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
-                           lm.ElasticNet)
-# assert isinstance(clf, supported_linear_models), (
-#     "Classifiers of type {} not currently supported.".format(type(clf))
-# )
 
 
-def residuals(y_true, y_pred, standardized=True):
+def residuals(clf, X, y, r_type='standardized'):
+    """Calculate residuals or standardized residuals.
+
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    r_type : str
+        Type of residuals to return: ['raw', 'standardized', 'studentized'].
+        Defaults to 'standardized'.
+
+        * 'raw' will return the raw residuals.
+        * 'standardized' will return the standardized residuals, also known as
+          internally studentized residuals.
+        * 'studentized' will return the externally studentized residuals.
+
+    Returns
+    -------
+    numpy.ndarray
+        An array of residuals.
+    """
+    assert r_type in ('raw', 'standardized', 'studentized'), (
+        "Invalid option for 'r_type': {0}".format(r_type)
+    )
+    y_true = y.view(dtype='float')
+    # Use classifier to make predictions
+    y_pred = clf.predict(X)
     # Make sure dimensions agree (Numpy still allows subtraction if they don't)
     assert y_true.shape == y_pred.shape, (
         "Dimensions of y_true {0} do not match y_pred {1}".format(y_true.shape,
                                                                   y_pred.shape)
     )
-    # With sns, only use their API so you don't change user stuff
-    sns.set_context("talk")  # Increase font size on plot
-    # Get residuals or standardized residuals
-    resids = y_pred - y_true  # Residuals
-    if standardized is True:
-        resids = resids / np.std(resids)  # Standardize resids
-    fig = plt.figure(figsize=(10, 7))
-    sns.set_style("whitegrid")
-    plt.scatter(predictions, standardized_resids, s=14, c='gray',
-                alpha=0.7)
-    plt.hlines(y=0, xmin=predictions.min() - 100,
-               xmax=predictions.max() + 100,
-              linestyle='dotted')
-    plt.title("Residual Plot")
-    plt.xlabel("Predictions")
-    plt.ylabel("Standardized Residuals")
+    # Get raw residuals, or standardized or standardized residuals
+    resids = y_pred - y_true
+    if r_type == 'standardized':
+        resids = resids / np.std(resids)
+        # TODO (nikhil): make sure this corresponds to standardized residuals
+    # TODO (nikhil): calculate externally studentized residuals
+    return resids
 
 
