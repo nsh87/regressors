@@ -53,7 +53,7 @@ def residuals(clf, X, y, r_type='standardized'):
     resids = y_pred - y_true
     if r_type == 'standardized':
         resids = resids / np.std(resids)
-    if r_type == 'studentized':
+    elif r_type == 'studentized':
         # Prepare a blank array to hold studentized residuals
         studentized_resids = np.zeros(y_true.shape[0], dtype='float')
         # Calcluate hat matrix of X values so you can get leverage scores
