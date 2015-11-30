@@ -47,24 +47,27 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     """
     # Ensure we only plot residuals using classifiers we have tested
     assert isinstance(clf, supported_linear_models), (
-        "Classifiers of type {} not currently supported.".format(type(clf))
-    )
-    # With sns, only use their API so you don't change user stuff
-    sns.set_context("talk")  # Increase font size on plot
+        "Classifiers of type {} not currently supported.".format(type(clf)))
+    # Set plot style
     sns.set_style("whitegrid")
+    sns.set_context("talk")  # Increase font size on plot
     # Get residuals or standardized residuals
     resids = stats.residuals(clf, X, y, r_type)
     predictions = clf.predict(X)
     # Generate residual plot
     y_label = {'raw': 'Residuals', 'standardized': 'Standardized Residuals',
                'studentized': 'Studentized Residuals'}
-    fig = plt.figure('residuals', figsize=figsize)
-    plt.scatter(predictions, resids, s=14, c='gray', alpha=0.7)
-    plt.hlines(y=0, xmin=predictions.min() - 100, xmax=predictions.max() + 100,
-               linestyle='dotted')
-    plt.title("Residuals Plot")
-    plt.xlabel("Predictions")
-    plt.ylabel(y_label[r_type])
-    plt.show()
+    try:
+        fig = plt.figure('residuals', figsize=figsize)
+        plt.scatter(predictions, resids, s=14, c='gray', alpha=0.7)
+        plt.hlines(y=0, xmin=predictions.min(),
+                   xmax=predictions.max(), linestyle='dotted')
+        plt.title("Residuals Plot")
+        plt.xlabel("Predictions")
+        plt.ylabel(y_label[r_type])
+        plt.show()
+    except:
+        raise  # Re-raise the exception
+    finally:
+        sns.reset_orig()  # Always reset back to default matplotlib styles
     return fig
-
