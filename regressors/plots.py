@@ -8,12 +8,9 @@ from __future__ import unicode_literals
 
 import matplotlib.pyplot as plt
 import seaborn.apionly as sns
-from sklearn import linear_model as lm
 
 from regressors import stats
-
-supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
-                           lm.ElasticNet)
+from regressors.regressors import supported_linear_models
 
 
 def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 10)):
