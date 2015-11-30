@@ -7,17 +7,16 @@ test_regressors
 
 Tests for the `regressors` module.
 """
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
 
+import numpy as np
+import pandas as pd
 import unittest2 as unittest
 from sklearn import datasets
-from sklearn import linear_model as lm
-from sklearn import naive_bayes
-import pandas as pd
-import numpy as np
+from sklearn.decomposition import PCA
 
 from regressors import regressors
 from regressors import stats
@@ -114,7 +113,7 @@ class TestLinearRegression(unittest.TestCase):
                       "exception unexpectedly: {0}".format(e))
 
 
-class TestStats_Residuals(unittest.TestCase):
+class Test_Stats_Residuals(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -122,19 +121,50 @@ class TestStats_Residuals(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_classifier_type_assertion(self):
+    def test_classifier_type_assertion_raised(self):
         # Test that assertion is raised for unsupported model
-        nb = naive_bayes.GaussianNB()
-        with self.assertRaises(AssertionError):
-            stats.residuals(nb, X, y)
+        pcomp = PCA()
+        pcomp.fit(X, y)
+        with self.assertRaises(AttributeError):
+            stats.residuals(pcomp, X, y)
+
+    def tests_classifier_type_assertion_not_raised(self):
         # Test that assertion is not raise for supported models
-        for clf in stats.supported_linear_models:
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
             try:
-                stats.residuals(clf(), X, y)
+                stats.residuals(clf, X, y)
             except Exception as e:
                 self.fail("Testing supported linear models in residuals "
                           "function failed unexpectedly: {0}".format(e))
 
+    def test_getting_raw_residuals(self):
+        ols = regressors.LinearRegression()
+        ols.fit(X, y)
+        try:
+            stats.residuals(ols, X, y, r_type='raw')
+        except Exception as e:
+            self.fail("Testing raw residuals failed unexpectedly: "
+                      "{0}".format(e))
+
+    def test_getting_standardized_residuals(self):
+        ols = regressors.LinearRegression()
+        ols.fit(X, y)
+        try:
+            stats.residuals(ols, X, y, r_type='standardized')
+        except Exception as e:
+            self.fail("Testing standardized residuals failed unexpectedly: "
+                      "{0}".format(e))
+
+    def test_getting_studentized_residuals(self):
+        ols = regressors.LinearRegression()
+        ols.fit(X, y)
+        try:
+            stats.residuals(ols, X, y, r_type='studentized')
+        except Exception as e:
+            self.fail("Testing studentized residuals failed unexpectedly: "
+                      "{0}".format(e))
 
 if __name__ == '__main__':
     import sys
