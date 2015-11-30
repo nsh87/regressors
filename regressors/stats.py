@@ -34,6 +34,7 @@ def residuals(clf, X, y, r_type='standardized'):
     numpy.ndarray
         An array of residuals.
     """
+    # Make sure value of parameter 'r_type' is one we recognize
     assert r_type in ('raw', 'standardized', 'studentized'), (
         "Invalid option for 'r_type': {0}".format(r_type)
     )
