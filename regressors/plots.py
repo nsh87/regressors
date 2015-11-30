@@ -13,7 +13,7 @@ from regressors import stats
 from regressors.regressors import supported_linear_models
 
 
-def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 10)):
+def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     """Plot residuals of a linear model.
 
     Parameters
