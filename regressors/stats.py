@@ -53,8 +53,24 @@ def residuals(clf, X, y, r_type='standardized'):
     resids = y_pred - y_true
     if r_type == 'standardized':
         resids = resids / np.std(resids)
-        # TODO (nikhil): make sure this corresponds to standardized residuals
-    # TODO (nikhil): calculate externally studentized residuals
+    if r_type == 'studentized':
+        # Prepare a blank array to hold studentized residuals
+        studentized_resids = np.zeros(y_true.shape[0], dtype='float')
+        # Calcluate hat matrix of X values so you can get leverage scores
+        hat_matrix = np.dot(
+            np.dot(X, np.linalg.inv(np.dot(np.transpose(X), X))),
+            np.transpose(X)
+        )
+        # For each point, calculate studentized residuals w/ leave-one-out MSE
+        for i in range(y_true.shape[0]):
+            # Make a mask so you can calculate leave-one-out MSE
+            mask = np.ones(y_true.shape[0], dtype='bool')
+            mask[i] = 0
+            loo_mse = np.average(resids[mask] ** 2, axis=0)  # Leave-one-out MSE
+            # Calculate studentized residuals
+            studentized_resids[i] = resids[i] / np.sqrt(
+                loo_mse * (1 - hat_matrix[i, i]))
+        resids = studentized_resids
     return resids
 
 
