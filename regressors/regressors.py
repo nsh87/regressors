@@ -5,13 +5,16 @@ from __future__ import print_function
 from __future__ import division
 from __future__ import absolute_import
 from __future__ import unicode_literals
-from sklearn import linear_model
+from sklearn import linear_model as lm
 import numpy as np
 import pandas as pd
 from regressors import stats
 
+supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
+                           lm.ElasticNet)
 
-class LinearRegression(linear_model.LinearRegression):
+
+class LinearRegression(lm.LinearRegression):
 
     def __init__(self, fit_intercept=True, normalize=False, copy_X=True,
                  n_jobs=1):
