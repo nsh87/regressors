@@ -10,4 +10,4 @@ Plots
 .. autosummary::
    :toctree: generated/
 
-   regressors.plots
+   plots.plot_residuals
