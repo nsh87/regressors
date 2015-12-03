@@ -1,4 +1,4 @@
-.. currentmodule:: regressors
+.. py:currentmodule:: regressors
 
 ========
 Modules
