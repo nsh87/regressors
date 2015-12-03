@@ -291,9 +291,6 @@ texinfo_documents = [
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
-# Autosummary settings
-autosummary_generate = True
-
 # Ignore warnings about GitHub PyPi/Coverage shields being nonlocal image URIs
 def _warn_node(self, msg, node):
     if not msg.startswith('nonlocal image URI found:'):

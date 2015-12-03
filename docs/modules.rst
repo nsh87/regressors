@@ -2,10 +2,8 @@
 Modules
 ========
 
-.. autosummary::
-   :toctree: generated/
-
-   regressors.plots.plot_residuals
-   regressors.plots
+Plots
+-----
 
 .. autofunction:: regressors.plots.plot_residuals
+   :members:
