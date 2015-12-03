@@ -1,24 +1,23 @@
-.. py:currentmodule:: regressors
+.. currentmodule:: regressors
 
 ========
 Modules
 ========
 
 .. autosummary::
-   :toctree: generated/
 
-   plots
-   plots.plot_residuals
-   stats
-   stats.residuals
+   regressors.plots
+   regressors.plots.plot_residuals
+   regressors.stats
+   regressors.stats.residuals
 
 Plots
 -----
 
-.. autofunction:: plots.plot_residuals
+.. autofunction:: regressors.plots.plot_residuals
 
 Stats
 -----
 
-.. autofunction:: stats.residuals
+.. autofunction:: regressors.stats.residuals
 
