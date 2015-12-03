@@ -1,3 +1,5 @@
+.. currentmodule:: regressors
+
 ========
 Modules
 ========
@@ -5,18 +7,18 @@ Modules
 .. autosummary::
    :toctree: generated/
 
-   regressors.plots
-   regressors.plots.plot_residuals
-   regressors.stats
-   regressors.stats.residuals
+   plots
+   plots.plot_residuals
+   stats
+   stats.residuals
 
 Plots
 -----
 
-.. autofunction:: regressors.plots.plot_residuals
+.. autofunction:: plots.plot_residuals
 
 Stats
 -----
 
-.. autofunction:: regressors.stats.residuals
+.. autofunction:: stats.residuals
 
