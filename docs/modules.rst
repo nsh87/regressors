@@ -1,6 +1,13 @@
+.. curentmodule:: regressors
+
 ========
 Modules
 ========
 
+Plots
+-----
+
 .. autosummary::
-   :toctree:
+   :toctree: generated/
+
+   regressors.plots
