@@ -3,6 +3,6 @@ Modules
 ========
 
 .. autosummary::
-   :toctree: generated/
+   :toctree:
 
    regressors.plots.plot_residuals
