@@ -15,6 +15,10 @@ Modules
 Plots
 -----
 
+.. autofunction:: regressors.stats.residuals
+
+.. autofunction:: stats.residuals
+
 .. autofunction:: regressors.plots.plot_residuals
 
 .. autofunction:: plots.plot_residuals
