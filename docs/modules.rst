@@ -1,3 +1,5 @@
+.. py:currentmodule:: regressors
+
 ========
 Modules
 ========
@@ -8,6 +10,7 @@ Modules
    regressors.plots
    regressors.plots.plot_residuals
    regressors.stats
+   plots
 
 Plots
 -----
