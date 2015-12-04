@@ -2,16 +2,16 @@
 Modules
 ========
 
-Plots
------
+regressors.plots
+----------------
 
 .. autosummary::
    :toctree: generated/
 
    regressors.plots.plot_residuals
 
-Stats
------
+regressors.stats
+----------------
 
 .. autosummary::
    :toctree: generated/
