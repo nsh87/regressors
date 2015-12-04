@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 
-"""This module contains functions for calculating various statistics."""
+"""This module contains functions for calculating various statistics and coefficients."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from regressors.regressors import supported_linear_models
 import numpy as np
 
 
@@ -72,5 +73,35 @@ def residuals(clf, X, y, r_type='standardized'):
                 loo_mse * (1 - hat_matrix[i, i]))
         resids = studentized_resids
     return resids
+
+
+def pca_beta_coeffs(clf_ols, clf_pca):
+    """Calculate the beta coefficients in real-space (instead of PCA-space).
+    Parameters
+    ----------
+    clf_ols : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    clf_pca : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+
+    Returns
+    -------
+    np.ndarray
+        An array of the real-space beta coefficients from Principal Component Regression
+    """
+    # Ensure we only calculate coefficients using classifiers we have tested
+    assert isinstance(clf_ols, supported_linear_models), (
+        "Classifiers of type {} not currently supported.".format(type(clf_ols)))
+    assert isinstance(clf_pca, supported_linear_models), (
+        "Classifiers of type {} not currently supported.".format(type(clf_pca)))
+
+    try:
+        beta_coeffs = np.dot(clf_ols.coef_, clf_pca.components_)
+
+    except Exception as e:
+        print(e)
+        beta_coeffs = None
+
+    return beta_coeffs
 
 
