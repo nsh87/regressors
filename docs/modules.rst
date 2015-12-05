@@ -21,5 +21,8 @@ regressors.stats
 regressors.regressors
 ---------------------
 
-.. autoclass:: regressors.regressors.PCR
+.. autosummary::
+   :toctree: generated/
+
+   regressors.regressors.PCA
    :members:
