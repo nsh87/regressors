@@ -24,5 +24,4 @@ regressors.regressors
 .. autosummary::
    :toctree: generated/
 
-   regressors.regressors.PCA
-   regressors.regressors.PCA.scaler
+   regressors.regressors.PCR
