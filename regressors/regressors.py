@@ -95,10 +95,10 @@ class PCR(object):
         -------
         numpy.ndarray
             Beta coefficients, corresponding to coefficients in the original
-            space and dimension of X. These are calculated as :math:`B = AP`,
-            where :math:`A` is a vector of the coefficients obtained from
-            regression on the principle components and :math:`P` is the matrix
-            of loadings from PCA.
+            space and dimension of X. These are calculated as
+            :math:`B = A \bullet P`, where :math:`A` is a vector of the
+            coefficients obtained from regression on the principle components
+            and :math:`P` is the matrix of loadings from PCA.
         """
         pass
 
