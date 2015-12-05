@@ -40,7 +40,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
           leverage_score)).
     figsize : tuple
         A tuple indicating the size of the plot to be created, with format
-        (x-axis, y-axis). Defaults to (10, 10).
+        (x-axis, y-axis). Defaults to (10, 8).
 
     Returns
     -------
@@ -49,7 +49,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     """
     # Ensure we only plot residuals using classifiers we have tested
     assert isinstance(clf, supported_linear_models), (
-        "Classifiers of type {} not currently supported.".format(type(clf)))
+        "Classifiers of type {0} not currently supported.".format(type(clf)))
     # Set plot style
     sns.set_style("whitegrid")
     sns.set_context("talk")  # Increase font size on plot
