@@ -25,3 +25,4 @@ regressors.regressors
    :toctree: generated/
 
    regressors.regressors.PCR
+   :members:

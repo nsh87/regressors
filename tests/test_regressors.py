@@ -22,6 +22,7 @@ from sklearn import preprocessing
 
 from regressors import regressors
 from regressors import stats
+from regressors import plots
 
 boston = datasets.load_boston()
 which_betas = np.ones(13, dtype=bool)
