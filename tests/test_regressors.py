@@ -22,7 +22,6 @@ from sklearn import preprocessing
 
 from regressors import regressors
 from regressors import stats
-from regressors import plots
 
 boston = datasets.load_boston()
 which_betas = np.ones(13, dtype=bool)
@@ -116,7 +115,7 @@ class TestLinearRegression(unittest.TestCase):
                       "exception unexpectedly: {0}".format(e))
 
 
-class TestStatsResiduals(unittest.TestCase):
+class Test_Stats_Residuals(unittest.TestCase):
 
     def setUp(self):
         pass
