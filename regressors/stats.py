@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 
-"""This module contains functions for calculating various statistics and coefficients."""
+"""This module contains functions for calculating various statistics."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-
-from regressors.regressors import supported_linear_models
+from sklearn.decomposition import PCA
+from regressors import supported_linear_models
 import numpy as np
 
 
 def residuals(clf, X, y, r_type='standardized'):
     """Calculate residuals or standardized residuals.
-
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -24,7 +23,6 @@ def residuals(clf, X, y, r_type='standardized'):
     r_type : str
         Type of residuals to return: ['raw', 'standardized', 'studentized'].
         Defaults to 'standardized'.
-
         * 'raw' will return the raw residuals.
         * 'standardized' will return the standardized residuals, also known as
           internally studentized residuals, which is calculated as the residuals
@@ -32,7 +30,6 @@ def residuals(clf, X, y, r_type='standardized'):
         * 'studentized' will return the externally studentized residuals, which
           is calculated as the raw residuals divided by sqrt(LOO-MSE * (1 -
           leverage_score)).
-
     Returns
     -------
     numpy.ndarray
@@ -75,14 +72,75 @@ def residuals(clf, X, y, r_type='standardized'):
     return resids
 
 
+def sse(clf, X, y):
+    clf.fit(X, y)
+    y_hat = clf.predict(X)
+    sse = sum((y_hat - y)**2)
+    return sse
+
+
+def r_square(clf,X, y):
+    clf.fit(X, y)
+    r_sqr = clf.score(X, y)
+    return (r_sqr)
+
+
+def adj_r_square(clf,X, y):
+    n = X.shape[0]
+    p = X.shape[1]
+    df = n-p-1
+    adj = 1-((1-r_square(clf,X, y))*(n-1))/df
+    return adj
+
+
+def MSE(clf, X, y):
+    n = X.shape[0]
+    p = X.shape[1]
+    df = n-p-1
+    mse = sse(clf, X,y)/df
+    return mse
+
+
+def var_X(X):
+    n = X.shape[0]
+    X = np.hstack((np.ones((n,1)),np.matrix(X)))
+    sigma_sqr = X.T*X
+    return (sigma_sqr)
+
+
+def se_betas(clf, X, y):
+    n = X.shape[0]
+    X = np.hstack((np.ones((n,1)),np.matrix(X)))
+    clf.fit(X, y)
+    mat_se = sc.linalg.sqrtm(MSE(clf, X,y) * np.linalg.inv(X.T*X))
+    se = np.diagonal(mat_se)
+    return se
+
+
+def tval_betas(clf, X, y):
+    clf.fit(X, y)
+    a = np.array(clf.intercept_/se_betas(clf, X, y)[0])
+    b = np.array(clf.coef_[1:]/se_betas(clf, X, y)[1:])
+    tval = np.append(a, b)
+    return tval
+
+
+def pval_betas(clf, X, y):
+    n = X.shape[0]
+    t = tval_betas(clf, X, y)
+    p = 2 * (1- sc.stats.t.cdf(abs(t), n-1))
+    return p
+
+
 def pca_beta_coeffs(clf_ols, clf_pca):
     """Calculate the beta coefficients in real-space (instead of PCA-space).
+
     Parameters
     ----------
     clf_ols : sklearn.linear_model
-        A scikit-learn linear model classifier with a `predict()` method.
-    clf_pca : sklearn.linear_model
-        A scikit-learn linear model classifier with a `predict()` method.
+        A scikit-learn linear model classifier.
+    clf_pca : sklearn.decomposition.PCA
+        A scikit-learn PCA model.
 
     Returns
     -------
@@ -91,17 +149,11 @@ def pca_beta_coeffs(clf_ols, clf_pca):
     """
     # Ensure we only calculate coefficients using classifiers we have tested
     assert isinstance(clf_ols, supported_linear_models), (
-        "Classifiers of type {} not currently supported.".format(type(clf_ols)))
-    assert isinstance(clf_pca, supported_linear_models), (
-        "Classifiers of type {} not currently supported.".format(type(clf_pca)))
+        "Classifiers of type {0} not currently supported".format(type(clf_ols)))
+    assert isinstance(clf_pca, PCA), (
+        "Classifiers of type {0} are not supported. "
+        "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
 
-    try:
-        beta_coeffs = np.dot(clf_ols.coef_, clf_pca.components_)
-
-    except Exception as e:
-        print(e)
-        beta_coeffs = None
-
-    return beta_coeffs
+    return np.dot(clf_ols.coef_, clf_pca.components_)
 
 
