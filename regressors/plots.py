@@ -52,15 +52,16 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     # Ensure we only plot residuals using classifiers we have tested
     assert isinstance(clf, supported_linear_models), (
         "Classifiers of type {0} not currently supported.".format(type(clf)))
-    # Set plot style
-    sns.set_style("whitegrid")
-    sns.set_context("talk")  # Increase font size on plot
     # Get residuals or standardized residuals
     resids = stats.residuals(clf, X, y, r_type)
     predictions = clf.predict(X)
-    # Generate residual plot
+    # Prepare plot labels to use, depending on which type of residuals used
     y_label = {'raw': 'Residuals', 'standardized': 'Standardized Residuals',
                'studentized': 'Studentized Residuals'}
+    # Set plot style
+    sns.set_style("whitegrid")
+    sns.set_context("talk")  # Increase font size on plot
+    # Generate residual plot
     try:
         fig = plt.figure('residuals', figsize=figsize)
         plt.scatter(predictions, resids, s=14, c='gray', alpha=0.7)
@@ -109,12 +110,12 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
         "Models of type {0} are not supported. Only models of type "
         "sklearn.decomposition.PCA are supported.".format(type(clf))
     )
+    # Extract variances from the model
+    variances = clf.explained_variance_ratio_
     # Set plot style and scale up font size
     sns.set_style("whitegrid")
     sns.set(font_scale=1.2)
-    # Extract variances from the model
-    variances = clf.explained_variance_ratio_
-    # Set up figure
+    # Set up figure and generate subplots
     try:
         fig = plt.figure('scree', figsize=figsize)
         # First plot (in subplot)
