@@ -30,7 +30,7 @@ class PCR(object):
 
     Attributes of the class mimic what is provided by scikit-learn's PCA and
     linear model classes. Additional attributes specifically relevant to PCR
-    are also provided, such as :func:`.PCR.get_beta_params`.
+    are also provided, such as ``PCR.get_beta_params``.
 
     Parameters
     ----------
