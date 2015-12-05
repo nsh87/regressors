@@ -68,11 +68,39 @@ class PCR(object):
     Attributes
     ----------
     scaler : sklearn.preprocessing.StandardScaler
-        The StandardScaler object used to scale the X data.
+        The StandardScaler object used to center the X data and scale to unit
+        variance. Must have ``fit()`` and ``transform()`` methods.
+        Can be overridden prior to fitting to use a different scaler::
+
+            pcr = PCR()
+            # Change StandardScaler options
+            pcr.scaler = StandardScaler(with_mean=False, with_std=True)
+            pcr.fit(X, y)
+
     prcomp : sklearn.decomposition.PCA
-        The PCA object use to perform PCA.
+        The PCA object use to perform PCA. This can also be accessed in the same
+        way as the scaler.
     regression : sklearn.linear_model
-        The linear model object used to perform regression.
+        The linear model object used to perform regression. Must have ``fit()``
+        and ``predict()`` methods. This defaults to OLS using scikit-learn's
+        LinearRegression classifier, but can be overridden either using the
+        `regression_type` parameter when instantiating the class, or
+        by replacing the regression model with a different on prior to fitting::
+
+            pcr = PCR(regression_type='ols')
+            # Examine the current regression model
+            print(pcr.regression)
+            LinearRegression(copy_X=True, fit_intercept=True, n_jobs=1,
+                normalize=False)
+            # Use Lasso regression with cross-validation instead of OLS
+            pcr.regression = linear_model.LassoCV(n_alphas=200)
+            print(pcr.regression)
+            LassoCV(alphas=None, copy_X=True, cv=None, eps=0.001,
+                fit_intercept=True, max_iter=1000, n_alphas=200, n_jobs=1,
+                normalize=False, positive=False, precompute='auto',
+                random_state=None, selection='cyclic', tol=0.0001,
+                verbose=False)
+            pcr.fit(X, y)
     """
 
     def __init__(self, n_components=None, regression_type='ols',
@@ -103,7 +131,7 @@ class PCR(object):
         pass
 
     def fit(self):
-        pass
+        self.scaler
 
     def predict(self):
         pass
