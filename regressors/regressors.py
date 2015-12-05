@@ -24,9 +24,9 @@ class PCR(object):
     data and performing PCA to reduce the dimensionality of X. This class
     simply creates a pipeline that utilizes:
 
-    1. sklearn.preprocessing.StandardScaler
-    2. sklearn.decomposition.PCA
-    3. a supported sklearn.linear_model
+        1. sklearn.preprocessing.StandardScaler
+        2. sklearn.decomposition.PCA
+        3. a supported sklearn.linear_model
 
     Attributes of the class mimic what is provided by scikit-learn's PCA and
     linear model classes. Additional attributes specifically relevant to PCR
