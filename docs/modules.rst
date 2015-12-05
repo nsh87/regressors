@@ -25,4 +25,4 @@ regressors.regressors
    :toctree: generated/
 
    regressors.regressors.PCA
-   :members:
+   regressors.regressors.PCA.scaler
