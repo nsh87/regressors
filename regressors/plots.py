@@ -10,6 +10,8 @@ import matplotlib.pyplot as plt
 import seaborn.apionly as sns
 import sklearn.decomposition as dcomp
 import numpy as np
+import scipy
+import statsmodels.api as sm
 
 from regressors import stats
 from regressors.regressors import supported_linear_models
@@ -151,3 +153,53 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
     finally:
         sns.reset_orig()
     return fig
+
+
+def qq_plot(clf, X, y, figsize=(7, 7)):
+    """Generate a Q-Q plot (a.k.a. normal quantile plot).
+
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    figsize : tuple
+        A tuple indicating the size of the plot to be created, with format
+        (x-axis, y-axis). Defaults to (7, 7).
+
+    Returns
+    -------
+    matplotlib.figure.Figure
+        The Figure instance.
+    """
+    # Ensure we only plot residuals using classifiers we have tested
+    assert isinstance(clf, supported_linear_models), (
+        "Classifiers of type {0} not currently supported.".format(type(clf)))
+    residuals = stats.residuals(clf, X, y, r_type='raw')
+    prob_plot = sm.ProbPlot(residuals, scipy.stats.t, fit=True)
+    # Set plot style
+    sns.set_style("darkgrid")
+    sns.set(font_scale=1.2)
+    # Generate plot
+    try:
+        # Q-Q plot doesn't respond to figure size, so prep a figure first
+        fig, ax = plt.subplots(figsize=figsize)
+        prob_plot.qqplot(line='45', ax=ax)
+        plt.title("Normal Quantile Plot")
+        plt.xlabel("Theoretical Standardized Residuals")
+        plt.ylabel("Actual Standardized Residuals")
+        plt.show()
+    except:
+        raise  # Re-raise the exception
+    finally:
+        sns.reset_orig()
+    return fig
+
+
+
+
+
+

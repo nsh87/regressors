@@ -19,6 +19,7 @@ requirements = [
     'scipy>=0.9',
     'matplotlib',
     'scikit-learn>=0.17',
+    'statsmodels>=0.6.1',
     'seaborn',
     'pandas',
 ]
