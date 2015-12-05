@@ -18,3 +18,10 @@ regressors.stats
 
    regressors.stats.residuals
 
+regressors.regressors
+---------------------
+
+.. autosummary::
+   :toctree: generated/
+
+   regressors.regressors.PCR
