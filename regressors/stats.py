@@ -73,4 +73,200 @@ def residuals(clf, X, y, r_type='standardized'):
         resids = studentized_resids
     return resids
 
+def sse(clf, X, y):
+
+    """Calculate the standard squared error of the model.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    integer
+    integer of standard squared error of the model
+    """
+    y_hat = clf.predict(X)
+    sse = np.sum((y_hat - y)**2)
+    return sse
+
+def r2_adj_score(clf,X, y):
+
+    """Calculate the adjusted r2 score of the model.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    integer
+    integer of ajdusted r2 score of the model
+    """
+
+    n = X.shape[0]
+    p = X.shape[1]
+    df = n-p-1
+    adj = 1-((1-clf.score(X, y))*(n-1))/df
+    return adj
+
+def mse(clf, X, y):
+
+    """Calculate the mean squared error.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    integer
+    integer of mean squared error
+    """
+    n = X.shape[0]
+    p = X.shape[1]
+    df = n-p-1
+    mse = sse(clf, X,y)/df
+    return mse
+
+def var_x(X):
+
+    """Calculate the variance of X.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    integer
+    integer of variance of X
+    """
+    n = X.shape[0]
+    X = np.hstack((np.ones((n,1)),np.matrix(X)))
+    sigma_sqr = X.T*X
+    return sigma_sqr
+
+def se_betas(clf, X, y):
+
+    """Calculate standard error for betas coefficients.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    numpy.ndarray
+    An array of standard errors of betas coefficients.
+    """
+
+    X = np.matrix(X)
+    n = X.shape[0]
+    X1 = np.hstack((np.ones((n,1)),np.matrix(X)))
+    mat_se = sc.linalg.sqrtm(mse(clf, X,y) * np.linalg.inv(X1.T*X1))
+    se = np.diagonal(mat_se)
+    return se
+
+def tval_betas(clf, X, y):
+
+    """Calculate t statistic for betas coefficients.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    numpy.ndarray
+    An array of t statistic values.
+    """
+    a = np.array(clf.intercept_/se_betas(clf, X, y)[0])
+    b = np.array(clf.coef_/se_betas(clf, X, y)[1:])
+    tval = np.append(a, b)
+    return tval
+
+def pval_betas(clf, X, y):
+
+    """Calculate p values for betas coefficients.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    numpy.ndarray
+    An array of p_values.
+    """
+    n = X.shape[0]
+    t = tval_betas(clf, X, y)
+    p = 2 * (1- sc.stats.t.cdf(abs(t), n-1))
+    return p
+
+def fsat(clf, X, y):
+
+    """Calculate overall F statistic for betas coefficients.
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    Returns
+    -------
+    integer
+    integer of F statistic value.
+    """
+    n = X.shape[0]
+    p = X.shape[1]
+    r2 = clf.score(X, y)
+    f = (r2/p)/((1-r2)/(n-p-1))
+    return f
+
+def summary(clf, X, y, Xlabels):
+    sse(clf, X, y)
+    r2_adj_score(clf, X, y)
+    tval_betas(clf, X, y)
+    pval_betas(clf, X, y)
+    se_betas(clf, X, y)
+    mse(clf, X, y)
+    var_x(X)
+    fsat(clf, X, y)
+
+    d = pd.DataFrame(index = ['intercept'] + list(Xlabels),
+                     columns=['estimate', 'std error', 't value', 'p value'])
+
+    d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
+    d['std error'] = se_betas(clf, X, y)
+    d['t value'] = tval_betas(clf, X, y)
+    d['p value'] = pval_betas(clf, X, y)
+
+    print 'R_squared : ' + str(clf.score(X, y))
+    print 'Adjusted R_squared : ' + str(r2_adj_score(clf, X, y))
+    print 'F stat : ' + str(fsat(clf, X, y))
+    return d
 
