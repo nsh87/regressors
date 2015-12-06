@@ -18,7 +18,7 @@ supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
 
 
 class PCR(object):
-    """Principle components regression models.
+    """Principle components regression model.
 
     This model solves a regression model after standard scaling the X
     data and performing PCA to reduce the dimensionality of X. This class
@@ -30,7 +30,7 @@ class PCR(object):
 
     Attributes of the class mimic what is provided by scikit-learn's PCA and
     linear model classes. Additional attributes specifically relevant to PCR
-    are also provided, such as py:attr:`.PCR.beta_coef_`.
+    are also provided, such as :py:attr:`.PCR.beta_coef_`.
 
     Parameters
     ----------
