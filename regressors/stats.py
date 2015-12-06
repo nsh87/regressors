@@ -132,13 +132,11 @@ def mse(clf, X, y):
     integer
     integer of mean squared error
     """
-
     n = X.shape[0]
     p = X.shape[1]
     df = n-p-1
     mse = sse(clf, X,y)/df
     return mse
-
 
 def var_x(X):
 
@@ -161,7 +159,6 @@ def var_x(X):
     sigma_sqr = X.T*X
     return sigma_sqr
 
-
 def se_betas(clf, X, y):
 
     """Calculate standard error for betas coefficients.
@@ -180,10 +177,11 @@ def se_betas(clf, X, y):
     """
 
     X = np.matrix(X)
-    mat_se = sc.linalg.sqrtm(mse(clf, X,y) * np.linalg.inv(X.T*X))
+    n = X.shape[0]
+    X1 = np.hstack((np.ones((n,1)),np.matrix(X)))
+    mat_se = sc.linalg.sqrtm(mse(clf, X,y) * np.linalg.inv(X1.T*X1))
     se = np.diagonal(mat_se)
     return se
-
 
 def tval_betas(clf, X, y):
 
@@ -202,7 +200,7 @@ def tval_betas(clf, X, y):
     An array of t statistic values.
     """
     a = np.array(clf.intercept_/se_betas(clf, X, y)[0])
-    b = np.array(clf.coef_[1:]/se_betas(clf, X, y)[1:])
+    b = np.array(clf.coef_/se_betas(clf, X, y)[1:])
     tval = np.append(a, b)
     return tval
 
@@ -248,3 +246,27 @@ def fsat(clf, X, y):
     r2 = clf.score(X, y)
     f = (r2/p)/((1-r2)/(n-p-1))
     return f
+
+def summary(clf, X, y, Xlabels):
+    sse(clf, X, y)
+    r2_adj_score(clf, X, y)
+    tval_betas(clf, X, y)
+    pval_betas(clf, X, y)
+    se_betas(clf, X, y)
+    mse(clf, X, y)
+    var_x(X)
+    fsat(clf, X, y)
+
+    d = pd.DataFrame(index = ['intercept'] + list(Xlabels),
+                     columns=['estimate', 'std error', 't value', 'p value'])
+
+    d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
+    d['std error'] = se_betas(clf, X, y)
+    d['t value'] = tval_betas(clf, X, y)
+    d['p value'] = pval_betas(clf, X, y)
+
+    print 'R_squared : ' + str(clf.score(X, y))
+    print 'Adjusted R_squared : ' + str(r2_adj_score(clf, X, y))
+    print 'F stat : ' + str(fsat(clf, X, y))
+    return d
+
