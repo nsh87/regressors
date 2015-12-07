@@ -5,8 +5,8 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-
 import numpy as np
+import pandas as pd
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -39,16 +39,14 @@ def residuals(clf, X, y, r_type='standardized'):
     """
     # Make sure value of parameter 'r_type' is one we recognize
     assert r_type in ('raw', 'standardized', 'studentized'), (
-        "Invalid option for 'r_type': {0}".format(r_type)
-    )
+        "Invalid option for 'r_type': {0}".format(r_type))
     y_true = y.view(dtype='float')
     # Use classifier to make predictions
     y_pred = clf.predict(X)
     # Make sure dimensions agree (Numpy still allows subtraction if they don't)
     assert y_true.shape == y_pred.shape, (
         "Dimensions of y_true {0} do not match y_pred {1}".format(y_true.shape,
-                                                                  y_pred.shape)
-    )
+                                                                  y_pred.shape))
     # Get raw residuals, or standardized or standardized residuals
     resids = y_pred - y_true
     if r_type == 'standardized':
@@ -59,8 +57,7 @@ def residuals(clf, X, y, r_type='standardized'):
         # Calcluate hat matrix of X values so you can get leverage scores
         hat_matrix = np.dot(
             np.dot(X, np.linalg.inv(np.dot(np.transpose(X), X))),
-            np.transpose(X)
-        )
+            np.transpose(X))
         # For each point, calculate studentized residuals w/ leave-one-out MSE
         for i in range(y_true.shape[0]):
             # Make a mask so you can calculate leave-one-out MSE
@@ -73,8 +70,8 @@ def residuals(clf, X, y, r_type='standardized'):
         resids = studentized_resids
     return resids
 
-def sse(clf, X, y):
 
+def sse(clf, X, y):
     """Calculate the standard squared error of the model.
     Parameters
     ----------
@@ -90,11 +87,11 @@ def sse(clf, X, y):
     integer of standard squared error of the model
     """
     y_hat = clf.predict(X)
-    sse = np.sum((y_hat - y)**2)
+    sse = np.sum((y_hat - y) ** 2)
     return sse
 
-def r2_adj_score(clf,X, y):
 
+def r2_adj_score(clf, X, y):
     """Calculate the adjusted r2 score of the model.
     Parameters
     ----------
@@ -112,12 +109,12 @@ def r2_adj_score(clf,X, y):
 
     n = X.shape[0]
     p = X.shape[1]
-    df = n-p-1
-    adj = 1-((1-clf.score(X, y))*(n-1))/df
+    df = n - p - 1
+    adj = 1 - ((1 - clf.score(X, y)) * (n - 1)) / df
     return adj
 
-def mse(clf, X, y):
 
+def mse(clf, X, y):
     """Calculate the mean squared error.
     Parameters
     ----------
@@ -134,12 +131,12 @@ def mse(clf, X, y):
     """
     n = X.shape[0]
     p = X.shape[1]
-    df = n-p-1
-    mse = sse(clf, X,y)/df
+    df = n - p - 1
+    mse = sse(clf, X, y) / df
     return mse
 
-def var_x(X):
 
+def var_x(X):
     """Calculate the variance of X.
     Parameters
     ----------
@@ -155,12 +152,12 @@ def var_x(X):
     integer of variance of X
     """
     n = X.shape[0]
-    X = np.hstack((np.ones((n,1)),np.matrix(X)))
-    sigma_sqr = X.T*X
+    X = np.hstack((np.ones((n, 1)), np.matrix(X)))
+    sigma_sqr = X.T * X
     return sigma_sqr
 
-def se_betas(clf, X, y):
 
+def se_betas(clf, X, y):
     """Calculate standard error for betas coefficients.
     Parameters
     ----------
@@ -178,13 +175,13 @@ def se_betas(clf, X, y):
 
     X = np.matrix(X)
     n = X.shape[0]
-    X1 = np.hstack((np.ones((n,1)),np.matrix(X)))
-    mat_se = sc.linalg.sqrtm(mse(clf, X,y) * np.linalg.inv(X1.T*X1))
+    X1 = np.hstack((np.ones((n, 1)), np.matrix(X)))
+    mat_se = sc.linalg.sqrtm(mse(clf, X, y) * np.linalg.inv(X1.T * X1))
     se = np.diagonal(mat_se)
     return se
 
-def tval_betas(clf, X, y):
 
+def tval_betas(clf, X, y):
     """Calculate t statistic for betas coefficients.
     Parameters
     ----------
@@ -199,13 +196,13 @@ def tval_betas(clf, X, y):
     numpy.ndarray
     An array of t statistic values.
     """
-    a = np.array(clf.intercept_/se_betas(clf, X, y)[0])
-    b = np.array(clf.coef_/se_betas(clf, X, y)[1:])
+    a = np.array(clf.intercept_ / se_betas(clf, X, y)[0])
+    b = np.array(clf.coef_ / se_betas(clf, X, y)[1:])
     tval = np.append(a, b)
     return tval
 
-def pval_betas(clf, X, y):
 
+def pval_betas(clf, X, y):
     """Calculate p values for betas coefficients.
     Parameters
     ----------
@@ -222,11 +219,11 @@ def pval_betas(clf, X, y):
     """
     n = X.shape[0]
     t = tval_betas(clf, X, y)
-    p = 2 * (1- sc.stats.t.cdf(abs(t), n-1))
+    p = 2 * (1 - sc.stats.t.cdf(abs(t), n - 1))
     return p
 
-def fsat(clf, X, y):
 
+def fsat(clf, X, y):
     """Calculate overall F statistic for betas coefficients.
     Parameters
     ----------
@@ -244,8 +241,9 @@ def fsat(clf, X, y):
     n = X.shape[0]
     p = X.shape[1]
     r2 = clf.score(X, y)
-    f = (r2/p)/((1-r2)/(n-p-1))
+    f = (r2 / p) / ((1 - r2) / (n - p - 1))
     return f
+
 
 def summary(clf, X, y, Xlabels):
     sse(clf, X, y)
@@ -257,7 +255,7 @@ def summary(clf, X, y, Xlabels):
     var_x(X)
     fsat(clf, X, y)
 
-    d = pd.DataFrame(index = ['intercept'] + list(Xlabels),
+    d = pd.DataFrame(index=['intercept'] + list(Xlabels),
                      columns=['estimate', 'std error', 't value', 'p value'])
 
     d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
@@ -265,8 +263,7 @@ def summary(clf, X, y, Xlabels):
     d['t value'] = tval_betas(clf, X, y)
     d['p value'] = pval_betas(clf, X, y)
 
-    print 'R_squared : ' + str(clf.score(X, y))
-    print 'Adjusted R_squared : ' + str(r2_adj_score(clf, X, y))
-    print 'F stat : ' + str(fsat(clf, X, y))
+    print('R_squared : ' + str(clf.score(X, y)))
+    print('Adjusted R_squared : ' + str(r2_adj_score(clf, X, y)))
+    print('F stat : ' + str(fsat(clf, X, y)))
     return d
-
