@@ -29,7 +29,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
     r_type : str
-        Type of residuals to return: ['raw', 'standardized', 'studentized'].
+        Type of residuals to return: 'raw', 'standardized', 'studentized'.
         Defaults to 'standardized'.
 
         * 'raw' will return the raw residuals.
