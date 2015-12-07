@@ -138,9 +138,11 @@ def coef_se(clf, X, y):
     """
     n = X.shape[0]
     X1 = np.hstack((np.ones((n, 1)), np.matrix(X)))
-    mat_se = scipy.linalg.sqrtm(metrics.mean_squared_error(y, clf.predict(X)) *
-                                np.linalg.inv(X1.T * X1))
-    return np.diagonal(mat_se)
+    se_matrix = scipy.linalg.sqrtm(
+        metrics.mean_squared_error(y, clf.predict(X)) *
+        np.linalg.inv(X1.T * X1)
+    )
+    return np.diagonal(se_matrix)
 
 
 def coef_tval(clf, X, y):
