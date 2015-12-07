@@ -139,27 +139,6 @@ def mse(clf, X, y):
     return mse
 
 
-def var_x(X):
-    """Calculate the variance of X.
-    Parameters
-    ----------
-    clf : sklearn.linear_model
-        A scikit-learn linear model classifier with a `predict()` method.
-    X : numpy.ndarray
-        Training data used to fit the classifier.
-    y : numpy.ndarray
-        Target training values, of shape = [n_samples].
-    Returns
-    -------
-    integer
-    integer of variance of X
-    """
-    n = X.shape[0]
-    X = np.hstack((np.ones((n, 1)), np.matrix(X)))
-    sigma_sqr = X.T * X
-    return sigma_sqr
-
-
 def se_betas(clf, X, y):
     """Calculate standard error for betas coefficients.
     Parameters
@@ -255,7 +234,6 @@ def summary(clf, X, y, Xlabels):
     pval_betas(clf, X, y)
     se_betas(clf, X, y)
     mse(clf, X, y)
-    var_x(X)
     fsat(clf, X, y)
 
     d = pd.DataFrame(index=['intercept'] + list(Xlabels),
