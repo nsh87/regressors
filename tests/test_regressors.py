@@ -173,10 +173,20 @@ class TestStatsResiduals(unittest.TestCase):
             clf.fit(X, y)
             try:
                 sse = stats.sse(clf, X, y)
-                print(sse)
             except Exception as e:
                 self.fail("Testing SSE function for supported linear models "
                           "failed unexpectedly: {0}".format(e))
+
+    def test_adj_r2_score(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.adj_r2_score(clf, X, y)
+            except Exception as e:
+                self.fail("Testing adjusted R2 function for supported linear "
+                          "models failed unexpectedly: {0}".format(e))
 
 
 if __name__ == '__main__':
