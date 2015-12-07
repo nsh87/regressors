@@ -73,6 +73,7 @@ def residuals(clf, X, y, r_type='standardized'):
 
 def sse(clf, X, y):
     """Calculate the standard squared error of the model.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -83,8 +84,8 @@ def sse(clf, X, y):
         Target training values, of shape = [n_samples].
     Returns
     -------
-    integer
-    integer of standard squared error of the model
+    float
+        The standard squared error of the model.
     """
     y_hat = clf.predict(X)
     sse = np.sum((y_hat - y) ** 2)
