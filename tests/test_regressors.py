@@ -190,6 +190,18 @@ class TestStatsResiduals(unittest.TestCase):
                 self.fail("Testing adjusted R2 function for supported linear "
                           "models failed unexpectedly: {0}".format(e))
 
+    def test_error_not_raised_by_beta(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            print(X.shape)
+            try:
+                print(stats.coef_se(clf, X, y).shape)
+            except Exception as e:
+                self.fail("Testing adjusted R2 function for supported linear "
+                          "models failed unexpectedly: {0}".format(e))
+
 
 if __name__ == '__main__':
     import sys
