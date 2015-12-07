@@ -166,7 +166,7 @@ class TestStatsResiduals(unittest.TestCase):
             self.fail("Testing studentized residuals failed unexpectedly: "
                       "{0}".format(e))
 
-    def test_sse(self):
+    def test_error_not_raised_by_sse(self):
         # Test that assertion is not raise for supported models
         for classifier in regressors.supported_linear_models:
             clf = classifier()
@@ -177,7 +177,7 @@ class TestStatsResiduals(unittest.TestCase):
                 self.fail("Testing SSE function for supported linear models "
                           "failed unexpectedly: {0}".format(e))
 
-    def test_adj_r2_score(self):
+    def test_error_not_raised_by_adj_r2_score(self):
         # Test that assertion is not raise for supported models
         for classifier in regressors.supported_linear_models:
             clf = classifier()
