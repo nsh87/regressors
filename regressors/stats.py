@@ -168,7 +168,8 @@ def coef_tval(clf, X, y):
 
 
 def coef_pval(clf, X, y):
-    """Calculate p values for betas coefficients.
+    """Calculate p-values for betas coefficients.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -177,10 +178,11 @@ def coef_pval(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
     numpy.ndarray
-    An array of p_values.
+        An array of p-values.
     """
     n = X.shape[0]
     t = coef_tval(clf, X, y)
