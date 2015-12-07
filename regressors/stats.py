@@ -7,6 +7,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import numpy as np
 import pandas as pd
+from sklearn.metrics import r2_score
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -82,6 +83,7 @@ def sse(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
     float
@@ -93,7 +95,8 @@ def sse(clf, X, y):
 
 
 def r2_adj_score(clf, X, y):
-    """Calculate the adjusted r2 score of the model.
+    """Calculate the adjusted R:superscript:`2` of the model.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -102,12 +105,12 @@ def r2_adj_score(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
-    integer
-    integer of ajdusted r2 score of the model
+    float
+        The adjusted R:superscript:`2` of the model.
     """
-
     n = X.shape[0]
     p = X.shape[1]
     df = n - p - 1
