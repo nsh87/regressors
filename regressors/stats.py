@@ -164,8 +164,7 @@ def coef_tval(clf, X, y):
     """
     a = np.array(clf.intercept_ / coef_se(clf, X, y)[0])
     b = np.array(clf.coef_ / coef_se(clf, X, y)[1:])
-    tval = np.append(a, b)
-    return tval
+    return np.append(a, b)
 
 
 def coef_pval(clf, X, y):
