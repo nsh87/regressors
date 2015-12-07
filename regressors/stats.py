@@ -94,7 +94,7 @@ def sse(clf, X, y):
     return sse
 
 
-def r2_adj_score(clf, X, y):
+def adj_r2_score(clf, X, y):
     """Calculate the adjusted R:superscript:`2` of the model.
 
     Parameters
@@ -251,7 +251,7 @@ def fsat(clf, X, y):
 
 def summary(clf, X, y, Xlabels):
     sse(clf, X, y)
-    r2_adj_score(clf, X, y)
+    adj_r2_score(clf, X, y)
     tval_betas(clf, X, y)
     pval_betas(clf, X, y)
     se_betas(clf, X, y)
@@ -268,6 +268,6 @@ def summary(clf, X, y, Xlabels):
     d['p value'] = pval_betas(clf, X, y)
 
     print('R_squared : ' + str(clf.score(X, y)))
-    print('Adjusted R_squared : ' + str(r2_adj_score(clf, X, y)))
+    print('Adjusted R_squared : ' + str(adj_r2_score(clf, X, y)))
     print('F stat : ' + str(fsat(clf, X, y)))
     return d
