@@ -113,7 +113,7 @@ class TestLinearRegression(unittest.TestCase):
                       "exception unexpectedly: {0}".format(e))
 
 
-class Test_Stats_Residuals(unittest.TestCase):
+class TestStatsResiduals(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -165,6 +165,19 @@ class Test_Stats_Residuals(unittest.TestCase):
         except Exception as e:
             self.fail("Testing studentized residuals failed unexpectedly: "
                       "{0}".format(e))
+
+    def test_sse(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                sse = stats.sse(clf, X, y)
+                print(sse)
+            except Exception as e:
+                self.fail("Testing SSE function for supported linear models "
+                          "failed unexpectedly: {0}".format(e))
+
 
 if __name__ == '__main__':
     import sys
