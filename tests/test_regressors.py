@@ -16,6 +16,8 @@ import numpy as np
 import pandas as pd
 import unittest2 as unittest
 from sklearn import datasets
+from sklearn import metrics
+from sklearn import linear_model
 from sklearn.decomposition import PCA
 
 from regressors import regressors
@@ -187,6 +189,13 @@ class TestStatsResiduals(unittest.TestCase):
             except Exception as e:
                 self.fail("Testing adjusted R2 function for supported linear "
                           "models failed unexpectedly: {0}".format(e))
+
+    def test_mse(self):
+        ols = linear_model.LinearRegression()
+        ols.fit(X, y)
+        expected_mse = metrics.mean_squared_error(y, ols.predict(X))
+        np.testing.assert_approx_equal(stats.mse(ols, X, y),
+                                       expected_mse)
 
 
 if __name__ == '__main__':
