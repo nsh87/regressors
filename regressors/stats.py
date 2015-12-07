@@ -111,12 +111,10 @@ def adj_r2_score(clf, X, y):
     float
         The adjusted R:superscript:`2` of the model.
     """
-    n = X.shape[0]
-    p = X.shape[1]
-    denominator = n - p - 1
+    n = X.shape[0]  # Number of observations
+    p = X.shape[1]  # Number of features
     r_squared = r2_score(y, clf.predict(X))
-    adj = 1 - ((1 - r_squared) * (n - 1)) / denominator
-    return adj
+    return 1 - (1 - r_squared) * ((n - 1) / (n - p - 1))
 
 
 def mse(clf, X, y):
