@@ -5,8 +5,10 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
+
 import numpy as np
 import pandas as pd
+import scipy
 from sklearn import metrics
 
 
@@ -117,8 +119,9 @@ def adj_r2_score(clf, X, y):
     return 1 - (1 - r_squared) * ((n - 1) / (n - p - 1))
 
 
-def se_betas(clf, X, y):
-    """Calculate standard error for betas coefficients.
+def coef_se(clf, X, y):
+    """Calculate standard error for beta coefficients.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -127,22 +130,22 @@ def se_betas(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
     numpy.ndarray
-    An array of standard errors of betas coefficients.
+        An array of standard errors for the beta coefficients.
     """
-
     X = np.matrix(X)
     n = X.shape[0]
     X1 = np.hstack((np.ones((n, 1)), np.matrix(X)))
-    mat_se = sc.linalg.sqrtm(metrics.mean_squared_error(y, clf.predict(X)) *
-                             np.linalg.inv(X1.T * X1))
+    mat_se = scipy.linalg.sqrtm(metrics.mean_squared_error(y, clf.predict(X)) *
+                                np.linalg.inv(X1.T * X1))
     se = np.diagonal(mat_se)
     return se
 
 
-def tval_betas(clf, X, y):
+def coef_tval(clf, X, y):
     """Calculate t statistic for betas coefficients.
     Parameters
     ----------
@@ -157,13 +160,13 @@ def tval_betas(clf, X, y):
     numpy.ndarray
     An array of t statistic values.
     """
-    a = np.array(clf.intercept_ / se_betas(clf, X, y)[0])
-    b = np.array(clf.coef_ / se_betas(clf, X, y)[1:])
+    a = np.array(clf.intercept_ / coef_se(clf, X, y)[0])
+    b = np.array(clf.coef_ / coef_se(clf, X, y)[1:])
     tval = np.append(a, b)
     return tval
 
 
-def pval_betas(clf, X, y):
+def coef_pval(clf, X, y):
     """Calculate p values for betas coefficients.
     Parameters
     ----------
@@ -179,7 +182,7 @@ def pval_betas(clf, X, y):
     An array of p_values.
     """
     n = X.shape[0]
-    t = tval_betas(clf, X, y)
+    t = coef_tval(clf, X, y)
     p = 2 * (1 - sc.stats.t.cdf(abs(t), n - 1))
     return p
 
@@ -209,9 +212,9 @@ def fsat(clf, X, y):
 def summary(clf, X, y, Xlabels):
     sse(clf, X, y)
     adj_r2_score(clf, X, y)
-    tval_betas(clf, X, y)
-    pval_betas(clf, X, y)
-    se_betas(clf, X, y)
+    coef_tval(clf, X, y)
+    coef_pval(clf, X, y)
+    coef_se(clf, X, y)
     metrics.mean_squared_error(y, clf.predict(X))
     fsat(clf, X, y)
 
@@ -219,9 +222,9 @@ def summary(clf, X, y, Xlabels):
                      columns=['estimate', 'std error', 't value', 'p value'])
 
     d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
-    d['std error'] = se_betas(clf, X, y)
-    d['t value'] = tval_betas(clf, X, y)
-    d['p value'] = pval_betas(clf, X, y)
+    d['std error'] = coef_se(clf, X, y)
+    d['t value'] = coef_tval(clf, X, y)
+    d['p value'] = coef_pval(clf, X, y)
 
     print('R_squared : ' + str(clf.score(X, y)))
     print('Adjusted R_squared : ' + str(adj_r2_score(clf, X, y)))
