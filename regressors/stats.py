@@ -136,13 +136,11 @@ def coef_se(clf, X, y):
     numpy.ndarray
         An array of standard errors for the beta coefficients.
     """
-    X = np.matrix(X)
     n = X.shape[0]
     X1 = np.hstack((np.ones((n, 1)), np.matrix(X)))
     mat_se = scipy.linalg.sqrtm(metrics.mean_squared_error(y, clf.predict(X)) *
                                 np.linalg.inv(X1.T * X1))
-    se = np.diagonal(mat_se)
-    return se
+    return np.diagonal(mat_se)
 
 
 def coef_tval(clf, X, y):
