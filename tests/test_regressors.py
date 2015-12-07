@@ -190,13 +190,6 @@ class TestStatsResiduals(unittest.TestCase):
                 self.fail("Testing adjusted R2 function for supported linear "
                           "models failed unexpectedly: {0}".format(e))
 
-    def test_mse(self):
-        ols = linear_model.LinearRegression()
-        ols.fit(X, y)
-        expected_mse = metrics.mean_squared_error(y, ols.predict(X))
-        np.testing.assert_approx_equal(stats.mse(ols, X, y),
-                                       expected_mse)
-
 
 if __name__ == '__main__':
     import sys

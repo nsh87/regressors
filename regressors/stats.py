@@ -7,7 +7,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score
+from sklearn import metrics
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -113,30 +113,8 @@ def adj_r2_score(clf, X, y):
     """
     n = X.shape[0]  # Number of observations
     p = X.shape[1]  # Number of features
-    r_squared = r2_score(y, clf.predict(X))
+    r_squared = metrics.r2_score(y, clf.predict(X))
     return 1 - (1 - r_squared) * ((n - 1) / (n - p - 1))
-
-
-def mse(clf, X, y):
-    """Calculate the mean squared error.
-    Parameters
-    ----------
-    clf : sklearn.linear_model
-        A scikit-learn linear model classifier with a `predict()` method.
-    X : numpy.ndarray
-        Training data used to fit the classifier.
-    y : numpy.ndarray
-        Target training values, of shape = [n_samples].
-    Returns
-    -------
-    integer
-    integer of mean squared error
-    """
-    n = X.shape[0]
-    p = X.shape[1]
-    df = n - p - 1
-    mse = sse(clf, X, y) / df
-    return mse
 
 
 def se_betas(clf, X, y):
@@ -158,7 +136,8 @@ def se_betas(clf, X, y):
     X = np.matrix(X)
     n = X.shape[0]
     X1 = np.hstack((np.ones((n, 1)), np.matrix(X)))
-    mat_se = sc.linalg.sqrtm(mse(clf, X, y) * np.linalg.inv(X1.T * X1))
+    mat_se = sc.linalg.sqrtm(metrics.mean_squared_error(y, clf.predict(X)) *
+                             np.linalg.inv(X1.T * X1))
     se = np.diagonal(mat_se)
     return se
 
@@ -233,7 +212,7 @@ def summary(clf, X, y, Xlabels):
     tval_betas(clf, X, y)
     pval_betas(clf, X, y)
     se_betas(clf, X, y)
-    mse(clf, X, y)
+    metrics.mean_squared_error(y, clf.predict(X))
     fsat(clf, X, y)
 
     d = pd.DataFrame(index=['intercept'] + list(Xlabels),
