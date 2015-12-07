@@ -146,7 +146,8 @@ def coef_se(clf, X, y):
 
 
 def coef_tval(clf, X, y):
-    """Calculate t statistic for betas coefficients.
+    """Calculate t-statistic for betas coefficients.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -155,10 +156,11 @@ def coef_tval(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
     numpy.ndarray
-    An array of t statistic values.
+        An array of t-statistic values.
     """
     a = np.array(clf.intercept_ / coef_se(clf, X, y)[0])
     b = np.array(clf.coef_ / coef_se(clf, X, y)[1:])
