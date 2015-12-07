@@ -113,8 +113,8 @@ def adj_r2_score(clf, X, y):
     """
     n = X.shape[0]
     p = X.shape[1]
-    df = n - p - 1
-    adj = 1 - ((1 - clf.score(X, y)) * (n - 1)) / df
+    denominator = n - p - 1
+    adj = 1 - ((1 - clf.score(X, y)) * (n - 1)) / denominator
     return adj
 
 
