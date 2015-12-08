@@ -153,7 +153,7 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
     return fig
 
 
-def qq_plot(clf, X, y, figsize=(7, 7)):
+def plot_qq(clf, X, y, figsize=(7, 7)):
     """Generate a Q-Q plot (a.k.a. normal quantile plot).
 
     Parameters
