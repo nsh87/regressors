@@ -189,6 +189,23 @@ Plotting
 Several functions are provided to quickly and easily make plots useful for
 judging a model. We will continue using the Boston data set referenced above.
 
+Residuals
+~~~~~~~~~
+
+Residuals can be plotted as actual residuals, standard residuals, or studentized
+residuals::
+
+    from sklearn import linear_model
+    from regressors import plots
+    ols = linear_model.LinearRegression()
+    ols.fit(X, y)
+
+    plots.plot_residuals(ols, X, y, r_type='standardized')
+
+Plots:
+
+.. image:: _static/residuals.png
+
 Principle Components Pairs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -208,6 +225,26 @@ Plots:
 
 .. image:: _static/pca_pairs_plot.png
 
+Scree Plot
+~~~~~~~~~~
+
+Scree plots can be quickly generated to visualize the amount of variance
+represented by each principle component with a helpful marker to see where
+a threshold of variance is reached::
+
+    from sklearn import preprocessing
+    from sklearn import decomposition
+    from regressors import plots
+    scaler = preprocessing.StandardScaler()
+    x_scaled = scaler.fit_transform(X)
+    pcomp = decomposition.PCA()
+    pcomp.fit(x_scaled)
+
+    plots.plot_scree(pcomp, required_var=0.85)
+
+Plots:
+
+.. image:: _static/scree.png
 
 Principle Components Regression (PCR)
 -------------------------------------
@@ -228,6 +265,9 @@ An example of using the PCR class::
 
     # The fitted scaler, pca, and scaler models can be accessed:
     scaler, pca, regression = (pcr.scaler, pcr.prcomp, pcr.regression)
+
+    # You could then make various plots, such as pca_pairs_plot(), and
+    # plot_residuals() with these fitted model from PCR.
 
 
 Beta Coefficients
