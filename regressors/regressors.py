@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 """This module contains core classes for regression models."""
-from __future__ import print_function
-from __future__ import division
 from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 from __future__ import unicode_literals
-from sklearn import linear_model as lm
+
 import numpy as np
 import pandas as pd
+from sklearn import linear_model as lm
 
 supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
                            lm.ElasticNet)

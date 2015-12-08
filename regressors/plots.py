@@ -7,15 +7,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import matplotlib.pyplot as plt
-import seaborn.apionly as sns
-import sklearn.decomposition as dcomp
 import numpy as np
 import scipy
+import seaborn.apionly as sns
+import sklearn.decomposition as dcomp
 import statsmodels.api as sm
 
-from regressors import stats
-from regressors.regressors import supported_linear_models
-
+from . import regressors
+from . import stats
 # TODO: Check these imports
 import pandas as pd
 
@@ -51,7 +50,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
         The Figure instance.
     """
     # Ensure we only plot residuals using classifiers we have tested
-    assert isinstance(clf, supported_linear_models), (
+    assert isinstance(clf, regressors.supported_linear_models), (
         "Classifiers of type {0} not currently supported.".format(type(clf)))
     # Get residuals or standardized residuals
     resids = stats.residuals(clf, X, y, r_type)
@@ -178,7 +177,7 @@ def qq_plot(clf, X, y, figsize=(7, 7)):
         The Figure instance.
     """
     # Ensure we only plot residuals using classifiers we have tested
-    assert isinstance(clf, supported_linear_models), (
+    assert isinstance(clf, regressors.supported_linear_models), (
         "Classifiers of type {0} not currently supported.".format(type(clf)))
     residuals = stats.residuals(clf, X, y, r_type='raw')
     prob_plot = sm.ProbPlot(residuals, scipy.stats.t, fit=True)

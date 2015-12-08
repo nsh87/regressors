@@ -6,12 +6,14 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-from sklearn.decomposition import PCA
-from regressors.regressors import supported_linear_models
+
 import numpy as np
 import pandas as pd
 import scipy
 from sklearn import metrics
+from sklearn.decomposition import PCA
+
+from . import regressors
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -289,7 +291,7 @@ def pcr_beta_coef(clf_regress, clf_pca):
         Regression.
     """
     # Ensure we only calculate coefficients using classifiers we have tested
-    assert isinstance(clf_regress, supported_linear_models), (
+    assert isinstance(clf_regress, regressors.supported_linear_models), (
         "Classifiers of type {0} not currently supported".format(type(clf_regress)))
     assert isinstance(clf_pca, PCA), (
         "Classifiers of type {0} are not supported. "

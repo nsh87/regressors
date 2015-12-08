@@ -17,8 +17,8 @@ import pandas as pd
 import unittest2 as unittest
 from sklearn import datasets
 from sklearn import decomposition
-from sklearn import preprocessing
 from sklearn import linear_model
+from sklearn import preprocessing
 
 from regressors import regressors
 from regressors import stats
