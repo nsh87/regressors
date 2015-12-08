@@ -113,7 +113,7 @@ class TestLinearRegression(unittest.TestCase):
                       "exception unexpectedly: {0}".format(e))
 
 
-class Test_Stats_Residuals(unittest.TestCase):
+class TestStatsResiduals(unittest.TestCase):
 
     def setUp(self):
         pass
@@ -165,6 +165,134 @@ class Test_Stats_Residuals(unittest.TestCase):
         except Exception as e:
             self.fail("Testing studentized residuals failed unexpectedly: "
                       "{0}".format(e))
+
+
+class TestSummaryStats(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_error_not_raised_by_sse(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                sse = stats.sse(clf, X, y)
+            except Exception as e:
+                self.fail("Testing SSE function for supported linear models "
+                          "failed unexpectedly: {0}".format(e))
+
+    def test_error_not_raised_by_adj_r2_score(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.adj_r2_score(clf, X, y)
+            except Exception as e:
+                self.fail("Testing adjusted R2 function for supported linear "
+                          "models failed unexpectedly: {0}".format(e))
+
+    def test_verify_adj_r2_score_return_type(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            adj_r2_score = stats.adj_r2_score(clf, X, y)
+            self.assertIsInstance(adj_r2_score, float)
+
+    def test_error_not_raised_by_coef_se(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.coef_se(clf, X, y).shape
+            except Exception as e:
+                self.fail("Testing standard error of coefficients function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
+
+    def test_length_of_returned_coef_se(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            coef_se = stats.coef_se(clf, X, y)
+            expected_length = X.shape[1] + 1  # Add 1 for the intercept
+            self.assertEqual(coef_se.shape[0], expected_length)
+
+    def test_error_not_raised_by_coef_tval(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.coef_tval(clf, X, y).shape
+            except Exception as e:
+                self.fail("Testing t-values of coefficients function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
+
+    def test_length_of_returned_coef_tval(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            coef_tval = stats.coef_tval(clf, X, y)
+            expected_length = X.shape[1] + 1  # Add 1 for the intercept
+            self.assertEqual(coef_tval.shape[0], expected_length)
+
+    def test_error_not_raised_by_coef_pval(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.coef_pval(clf, X, y).shape
+            except Exception as e:
+                self.fail("Testing p-values of coefficients function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
+
+    def test_length_of_returned_coef_pval(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            coef_pval = stats.coef_tval(clf, X, y)
+            expected_length = X.shape[1] + 1  # Add 1 for the intercept
+            self.assertEqual(coef_pval.shape[0], expected_length)
+
+    def test_error_not_raised_by_f_stat(self):
+        # Test that assertion is not raise for supported models
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.f_stat(clf, X, y).shape
+            except Exception as e:
+                self.fail("Testing summary F-statistic function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
+
+    def test_verify_f_stat_return_type(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            adj_r2_score = stats.adj_r2_score(clf, X, y)
+            self.assertIsInstance(adj_r2_score, float)
+
+    def test_error_not_raised_by_summary_function(self):
+        for classifier in regressors.supported_linear_models:
+            clf = classifier()
+            clf.fit(X, y)
+            try:
+                stats.f_stat(clf, X, y).shape
+            except Exception as e:
+                self.fail("Testing summary function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
 
 if __name__ == '__main__':
     import sys

@@ -2,11 +2,15 @@
 Installation
 ============
 
-At the command line::
+You should have `Numpy` and `SciPy` installed prior to installation.
 
-    $ easy_install regressors
-
-Or, if you have virtualenvwrapper installed::
+If you have virtualenvwrapper installed::
 
     $ mkvirtualenv regressors
+    $ pip install numpy scipy
     $ pip install regressors
+
+Or, at the command line::
+
+    $ easy_install numpy scipy
+    $ easy_install regressors
