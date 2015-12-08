@@ -21,7 +21,6 @@ from sklearn import linear_model
 from sklearn import preprocessing
 
 from regressors import regressors
-from regressors import plots
 from regressors import stats
 
 boston = datasets.load_boston()
