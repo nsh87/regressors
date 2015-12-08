@@ -49,10 +49,10 @@ To calculate the SSE::
 Output: 11299.555410604258
 
 
-Adjusted R:sup:`2`
+Adjusted R-Squared
 ~~~~~~~~~~~~~~~~~~
 
-To calculate the adjusted R2::
+To calculate the adjusted R-squared::
 
     from sklearn import linear_model
     from regressors import stats
