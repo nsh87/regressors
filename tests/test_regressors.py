@@ -262,6 +262,10 @@ class TestPCRClass(unittest.TestCase):
         pcr.fit(X, y)
         self.assertIsInstance(pcr.intercept_, float)
 
+    def test_get_score_from_pcr_model(self):
+        pcr = regressors.PCR(n_components=10)
+        pcr.fit(X, y)
+        self.assertIsInstance(pcr.score(X, y), float)
 
 if __name__ == '__main__':
     import sys

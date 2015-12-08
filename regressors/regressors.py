@@ -9,6 +9,7 @@ from __future__ import unicode_literals
 from sklearn import decomposition as dcomp
 from sklearn import linear_model as lm
 from sklearn import preprocessing
+from sklearn import metrics
 
 from . import stats
 
@@ -183,6 +184,23 @@ class PCR(object):
         x_reduced = self.prcomp.transform(x_scaled)
         return self.regression.predict(x_reduced)
 
-    def score(self):
-        pass
+    def score(self, X, y):
+        """
+        Returns the coefficient of determination of R:superscript:`2` of the
+        preditions.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Training or tests samples.
+        y : numpy.ndarray
+            Target values.
+
+        Returns
+        -------
+        float
+            The R:superscript:`2` value of the predictions.
+        """
+        return metrics.r2_score(y, self.predict(X))
+
 
