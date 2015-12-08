@@ -233,10 +233,10 @@ Plots:
 
 .. image:: _static/qq_plot.png
 
-Principle Components Pairs
+Principal Components Pairs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To generate a pairwise plot of principle components::
+To generate a pairwise plot of principal components::
 
     from sklearn import preprocessing
     from sklearn import decomposition
@@ -256,7 +256,7 @@ Scree Plot
 ~~~~~~~~~~
 
 Scree plots can be quickly generated to visualize the amount of variance
-represented by each principle component with a helpful marker to see where
+represented by each principal component with a helpful marker to see where
 a threshold of variance is reached::
 
     from sklearn import preprocessing
@@ -273,7 +273,7 @@ Plots:
 
 .. image:: _static/scree.png
 
-Principle Components Regression (PCR)
+Principal Components Regression (PCR)
 -------------------------------------
 
 The PCR class can be used to quickly run PCR on a data set. This class
