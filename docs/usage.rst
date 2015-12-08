@@ -305,6 +305,7 @@ To transform those components back to the space of the original X data::
     pcr.beta_coef_
 
 Output::
+
     array([-0.96384079,  1.09565914,  0.27855742, -2.0139296 ,  2.69901773,
             0.08005632, -3.12506044,  2.85224741, -2.31531704, -2.14492552,
             0.89624424, -3.81608008])
