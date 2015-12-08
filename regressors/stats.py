@@ -276,26 +276,3 @@ def summary(clf, X, y, xlabels=None):
         f_stat(clf, X, y), ncols))
 
 
-def pcr_beta_coef(clf_regress, clf_pca):
-    """Calculate the beta coefficients in real-space (instead of PCA-space)
-    from principle components regression.
-
-    Parameters
-    ----------
-    clf_regress : sklearn.linear_model
-        A scikit-learn linear model classifier.
-    clf_pca : sklearn.decomposition.PCA
-        A scikit-learn PCA model.
-
-    Returns
-    -------
-    np.ndarray
-        An array of the real-space beta coefficients from principal components
-        regression.
-    """
-    # Ensure we only calculate coefficients using classifiers we have tested
-    assert isinstance(clf_pca, PCA), (
-        "Classifiers of type {0} are not supported. "
-        "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
-    return np.dot(clf_regress.coef_, clf_pca.components_)
-

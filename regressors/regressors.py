@@ -6,12 +6,37 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from sklearn import decomposition as dcomp
+import numpy as np
+from sklearn import decomposition
 from sklearn import linear_model as lm
-from sklearn import preprocessing
 from sklearn import metrics
+from sklearn import preprocessing
 
 from . import stats
+
+
+def pcr_beta_coef(clf_regress, clf_pca):
+    """Calculate the beta coefficients in real-space (instead of PCA-space)
+    from principle components regression.
+
+    Parameters
+    ----------
+    clf_regress : sklearn.linear_model
+        A scikit-learn linear model classifier.
+    clf_pca : sklearn.decomposition.PCA
+        A scikit-learn PCA model.
+
+    Returns
+    -------
+    np.ndarray
+        An array of the real-space beta coefficients from principal components
+        regression.
+    """
+    # Ensure we only calculate coefficients using classifiers we have tested
+    assert isinstance(clf_pca, decomposition.PCA), (
+        "Classifiers of type {0} are not supported. "
+        "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
+    return np.dot(clf_regress.coef_, clf_pca.components_)
 
 
 class PCR(object):
@@ -108,7 +133,7 @@ class PCR(object):
         self.n_jobs = n_jobs
         # Create scaler and PCA models
         self.scaler = preprocessing.StandardScaler()
-        self.prcomp = dcomp.PCA()
+        self.prcomp = decomposition.PCA()
         # Create regression classifier
         regression_class = {'ols': lm.LinearRegression, 'lasso': lm.Lasso,
                             'ridge': lm.Ridge, 'elasticnet': lm.ElasticNet}
@@ -126,7 +151,7 @@ class PCR(object):
             coefficients obtained from regression on the principle components
             and :math:`P` is the matrix of loadings from PCA.
         """
-        return stats.pcr_beta_coef(self.regression, self.prcomp)
+        return pcr_beta_coef(self.regression, self.prcomp)
 
     @property
     def intercept_(self):
