@@ -12,9 +12,6 @@ from sklearn import preprocessing
 
 from . import stats
 
-supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
-                           lm.ElasticNet)
-
 
 class PCR(object):
     """Principle components regression model.
