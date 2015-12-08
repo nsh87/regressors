@@ -203,49 +203,43 @@ Plots:
 .. image:: pca_pairs_plot.png
 
 
-    #***********************************
-    # * Plot Principal Component Pairs *
-    #***********************************
+Principle Components Regression (PCR)
+-------------------------------------
 
-    # Example 1
-    import numpy as np
-    from sklearn.cross_validation import train_test_split
-    iris = sns.load_dataset("iris")  # sample data set
-    species = np.array(iris['species'].values, dtype=str)  # set the 'species' aside as Y categorical response variable
-    X = iris.iloc[:,:4].as_matrix()  # create matrix of X precictor variables
+The PCR class can be used to quickly run PCR on a data set. This class
+provides the familiar ``fit()``, ``predict()``, and ``score()`` methods that
+are common to scikit-learn regression models. The type of scaler, the number
+of components for PCA, and the regression model are all tunable.
 
-    X_train, X_test, t_train, t_test = train_test_split(X, species,
-                                                    train_size=0.8,
-                                                    random_state=1)
-    plot_pca_pairs(X_train, t_train, 4, 2, 'hist', 'Species')
+PCR Class
+~~~~~~~~~
 
-    # Example 2
-    from sklearn import decomposition
-    import numpy as np
-    iris = sns.load_dataset("iris")
-    species = np.array(iris['species'].values, dtype=str)
-    X = iris.iloc[:,:4].as_matrix()
-    pcomp = decomposition.PCA(n_components=4)
-    pcomp.fit(X)
+An example of using the PCR class::
 
-    plot_pca_pairs(clf_pca=pcomp, x_train=X, n_comps=4, y=species)
+    from regressors import regressors
+    pcr = regressors.PCR(n_components=10, regression_type='ols')
+    pcr.fit(X, y)
+
+    # The fitted scaler, pca, and scaler models can be accessed:
+    scaler, pca, regression = (pcr.scaler, pcr.prcomp, pcr.regression)
 
 
-    #***********************************
-    # * Get Beta Coefficients from PCA *
-    #***********************************
-    import statsmodels.api as sm
-    dta = sm.datasets.fair.load_pandas().data  # sample dataset
-    dta['affair'] = (dta['affairs'] > 0).astype(float)  # adds Y to dataframe based on 'affairs' values
-    X = dta.ix[:, 0:8].as_matrix()  # want only X data; take Y out; convert it from pandas.dataframe to numpy.matrix
-    Y = np.array(dta['affair'])  # set the Y response to a numpy.array
+Beta Coefficients
+~~~~~~~~~~~~~~~~~
 
-    # perform PCA/PCR. The pcr() function returns a tuple(mspe.mean(), mse.mean(), ols, pcomp)
-    tmp = pcr(X, Y, num_components=4, k=10)
-    ols = tmp[2]
-    pcomp = tmp[3]
+The coefficients in PCR's regression model are coefficients for the PCA space.
+To transform those components back to the space of the original X data::
 
-    # send the OLS and PCA object into the pca_beta_coeffs() fxn
-    print(pca_beta_coeffs(ols, pcomp))
+    from regressors import regressors
+    pcr = regressors.PCR(n_components=10, regression_type='ols')
+    pcr.fit(X, y)
+    pcr.beta_coef_
+
+Output: array([-0.96384079,  1.09565914,  0.27855742, -2.0139296 ,  2.69901773,
+                0.08005632, -3.12506044,  2.85224741, -2.31531704, -2.14492552,
+                0.89624424, -3.81608008])
+
+Note that the intercept is the same for the X space and the PCA space, so
+simply access that directly with ``pcr.self.regression.intercept_``.
 
 .. image:: _static/pca_pairs_plot.png
