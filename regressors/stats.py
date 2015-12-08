@@ -294,9 +294,6 @@ def pcr_beta_coef(clf_regress, clf_pca):
         regression.
     """
     # Ensure we only calculate coefficients using classifiers we have tested
-    assert isinstance(clf_regress, _utils.supported_linear_models), (
-        "Classifiers of type {0} not currently supported".format(
-            type(clf_regress)))
     assert isinstance(clf_pca, PCA), (
         "Classifiers of type {0} are not supported. "
         "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
