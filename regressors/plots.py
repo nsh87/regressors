@@ -18,7 +18,6 @@ from regressors.regressors import supported_linear_models
 
 # TODO: Check these imports
 import pandas as pd
-from get_pca import pcr
 
 
 def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
@@ -273,7 +272,6 @@ def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
     # a = sns.pairplot(df, hue=legend_title, diag_kind=diag, size=facet_size)
     # plt.show(a)
 
-    return
 
 
 
