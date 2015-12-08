@@ -206,6 +206,22 @@ Plots:
 
 .. image:: _static/residuals.png
 
+Q-Q Plot
+~~~~~~~~
+
+Q-Q plots can quickly be obtained to aid in checking the normal assumption::
+
+    from sklearn import linear_model
+    from regressors import plots
+    ols = linear_model.LinearRegression()
+    ols.fit(X, y)
+
+    plots.plot_qq(ols, X, y, figsize=(8, 8))
+
+Plots:
+
+.. image:: _static/qq_plot.png
+
 Principle Components Pairs
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
