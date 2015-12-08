@@ -271,7 +271,7 @@ def summary(clf, X, y, xlabels=None):
         f_stat(clf, X, y), ncols))
 
 
-def pca_beta_coeffs(clf_regress, clf_pca):
+def pcr_beta_coef(clf_regress, clf_pca):
     """Calculate the beta coefficients in real-space (instead of PCA-space).
 
     Parameters
