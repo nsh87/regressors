@@ -101,7 +101,7 @@ def sse(clf, X, y):
 
 
 def adj_r2_score(clf, X, y):
-    """Calculate the adjusted R:superscript:`2` of the model.
+    """Calculate the adjusted :math:`R^2` of the model.
 
     Parameters
     ----------
@@ -115,7 +115,7 @@ def adj_r2_score(clf, X, y):
     Returns
     -------
     float
-        The adjusted R:superscript:`2` of the model.
+        The adjusted :math:`R^2` of the model.
     """
     n = X.shape[0]  # Number of observations
     p = X.shape[1]  # Number of features

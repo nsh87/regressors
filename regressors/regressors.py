@@ -186,8 +186,8 @@ class PCR(object):
 
     def score(self, X, y):
         """
-        Returns the coefficient of determination of R:superscript:`2` of the
-        preditions.
+        Returns the coefficient of determination of :math:`R^2` of the
+        predictions.
 
         Parameters
         ----------
@@ -199,7 +199,7 @@ class PCR(object):
         Returns
         -------
         float
-            The R:superscript:`2` value of the predictions.
+            The :math:`R^2` value of the predictions.
         """
         return metrics.r2_score(y, self.predict(X))
 
