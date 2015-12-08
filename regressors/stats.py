@@ -256,7 +256,7 @@ def summary(clf, X, y, xlabels=None):
         'Median': pd.Series(np.round(np.median(resids), 4)),
         '3Q': pd.Series(np.round(np.percentile(resids, q=75), 4)),
         'Max': pd.Series(np.round(resids.max(), 4)),
-    })
+    }, columns=['Min', '1Q', 'Median', '3Q', 'Max'])
     # Output results
     print("Residuals:")
     print(resids_df.to_string(index=False))
