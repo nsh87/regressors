@@ -6,12 +6,11 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+from sklearn import decomposition as dcomp
 from sklearn import linear_model as lm
 from sklearn import preprocessing
-from sklearn import decomposition as dcomp
-import numpy as np
-import pandas as pd
-from sklearn import linear_model as lm
+
+from . import stats
 
 supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
                            lm.ElasticNet)
@@ -128,7 +127,8 @@ class PCR(object):
             coefficients obtained from regression on the principle components
             and :math:`P` is the matrix of loadings from PCA.
         """
-        pass
+        return stats.pcr_beta_coef(self.regression, self.prcomp)
+
 
     def fit(self):
         self.scaler
