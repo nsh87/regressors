@@ -252,6 +252,11 @@ class TestPCRClass(unittest.TestCase):
                 self.fail("Testing .fit() on a PCR class with regression model "
                           "{0} failed unexpectedly: {1}".format(regression, e))
 
+    def test_get_beta_coefficients_from_pcr_model(self):
+        pcr = regressors.PCR(n_components=10)
+        pcr.fit(X, y)
+        self.assertEqual(X.shape[1], pcr.beta_coef_.shape[0])
+
 
 if __name__ == '__main__':
     import sys
