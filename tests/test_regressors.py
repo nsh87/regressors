@@ -21,6 +21,7 @@ from sklearn import linear_model
 from sklearn import preprocessing
 
 from regressors import regressors
+from regressors import _utils
 from regressors import stats
 
 boston = datasets.load_boston()
@@ -47,7 +48,7 @@ class TestStatsResiduals(unittest.TestCase):
 
     def tests_classifier_type_assertion_not_raised(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -94,7 +95,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_sse(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -105,7 +106,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_adj_r2_score(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -115,7 +116,7 @@ class TestSummaryStats(unittest.TestCase):
                           "models failed unexpectedly: {0}".format(e))
 
     def test_verify_adj_r2_score_return_type(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             adj_r2_score = stats.adj_r2_score(clf, X, y)
@@ -123,7 +124,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_coef_se(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -134,7 +135,7 @@ class TestSummaryStats(unittest.TestCase):
                           "unexpectedly: {0}".format(e))
 
     def test_length_of_returned_coef_se(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             coef_se = stats.coef_se(clf, X, y)
@@ -143,7 +144,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_coef_tval(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -154,7 +155,7 @@ class TestSummaryStats(unittest.TestCase):
                           "unexpectedly: {0}".format(e))
 
     def test_length_of_returned_coef_tval(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             coef_tval = stats.coef_tval(clf, X, y)
@@ -163,7 +164,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_coef_pval(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -174,7 +175,7 @@ class TestSummaryStats(unittest.TestCase):
                           "unexpectedly: {0}".format(e))
 
     def test_length_of_returned_coef_pval(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             coef_pval = stats.coef_tval(clf, X, y)
@@ -183,7 +184,7 @@ class TestSummaryStats(unittest.TestCase):
 
     def test_error_not_raised_by_f_stat(self):
         # Test that assertion is not raise for supported models
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -194,14 +195,14 @@ class TestSummaryStats(unittest.TestCase):
                           "unexpectedly: {0}".format(e))
 
     def test_verify_f_stat_return_type(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             adj_r2_score = stats.adj_r2_score(clf, X, y)
             self.assertIsInstance(adj_r2_score, float)
 
     def test_error_not_raised_by_summary_function(self):
-        for classifier in regressors.supported_linear_models:
+        for classifier in _utils.supported_linear_models:
             clf = classifier()
             clf.fit(X, y)
             try:
@@ -232,6 +233,24 @@ class TestPCRBetaCoef(unittest.TestCase):
         ols.fit(x_reduced, y)
         beta_coef = stats.pcr_beta_coef(ols, pcomp)
         self.assertEqual(beta_coef.shape, ols.coef_.shape)
+
+
+class TestPCRClass(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_fitting_a_pcr_model_with_various_regression_types(self):
+        for regression in ('ols', 'lasso', 'ridge', 'elasticnet'):
+            pcr = regressors.PCR(regression_type=regression)
+            try:
+                pcr.fit(X, y)
+            except Exception as e:
+                self.fail("Testing .fit() on a PCR class with regression model "
+                          "{0} failed unexpectedly: {1}".format(regression, e))
 
 
 if __name__ == '__main__':
