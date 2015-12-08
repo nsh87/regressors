@@ -313,7 +313,7 @@ class TestPCRBetaCoef(unittest.TestCase):
         pcomp.fit(x_scaled)
         x_reduced = pcomp.transform(x_scaled)
         ols = linear_model.LinearRegression()
-        ols.fit(x_reduced)
+        ols.fit(x_reduced, y)
         beta_coef = stats.pcr_beta_coef(ols, pcomp)
         self.assertEqual(beta_coef.shape, ols.coef_.shape)
 
