@@ -236,7 +236,7 @@ def summary(clf, X, y, xlabels=None):
     ncols = X.shape[1]
     if xlabels is None:
         xlabels = np.array(
-            ['x{0}'.format(i) for i in range(ncols)], dtype='str')
+            ['x{0}'.format(i) for i in range(1, ncols + 1)], dtype='str')
     elif isinstance(xlabels, (tuple, list)):
         xlabels = np.array(xlabels, dtype='str')
     # Make sure dims of xlabels matches dims of X
