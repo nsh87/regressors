@@ -266,5 +266,5 @@ def summary(clf, X, y, xlabels=None):
     print('---')
     print('R-squared:  {0:.5f},    Adjusted R-squared:  {1:.5f}'.format(
         metrics.r2_score(y, clf.predict(X)), adj_r2_score(clf, X, y)))
-    print('Summary F-statistic: {0:.2f} on {1} features'.format(
+    print('F-statistic: {0:.2f} on {1} features'.format(
         f_stat(clf, X, y), ncols))
