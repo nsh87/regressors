@@ -31,6 +31,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     r_type : str
         Type of residuals to return: 'raw', 'standardized', 'studentized'.
         Defaults to 'standardized'.
+
         * 'raw' will return the raw residuals.
         * 'standardized' will return the Pearson standardized residuals, also
           known as internally studentized residuals, which is calculated as the
@@ -39,6 +40,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
         * 'studentized' will return the externally studentized residuals, which
           is calculated as the raw residuals divided by sqrt(LOO-MSE * (1 -
           leverage_score)).
+
     figsize : tuple
         A tuple indicating the size of the plot to be created, with format
         (x-axis, y-axis). Defaults to (10, 8).
@@ -196,71 +198,93 @@ def qq_plot(clf, X, y, figsize=(7, 7)):
     return fig
 
 
-def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
-                   diag='kde', legend_title=None):
+def plot_pca_pairs(clf_pca, x_train, n_components=3, y=None, facet_size=2,
+                   diag='kde', legend_title=None, cmap=None, **kwargs):
     """
     Create pairwise plots of principal components from x data.
 
-    Colors the components according to the y values.
+    Colors the components according to the y values. Plots are generated with
+    the `seaborn` package. More plotting options are available at
+    http://stanford.edu/~mwaskom/software/seaborn/generated/seaborn.pairplot.
 
     Parameters
     ----------
     clf_pca : sklearn.decomposition.PCA
-        A scikit-learn PCA model.
+        a fitted scikit-learn PCA model.
     x_train : numpy.ndarray
-        Training data used to fit the classifier.
-    n_comps: integer
-        Desired number of principal components to plot.
+        training data used to fit `clf_pca`, either scaled or un-scaled,
+        depending on how `clf_pca` was fit.
+    n_components: int
+        desired number of principal components to plot. Defaults to 3.
     y : numpy.ndarray
-        Target training values, of shape = [n_samples].
-    scaler : sklearn.preprocessing
-        A scaler created to scale the data per the users' pre-specifications.
-    facet_size: integer
-        Numerical value representing size (width) of each facet of the
-        pairwise plot.
-        Default is 2. Units are in inches.
-    diag: string
-        Type of plot to display on the diagonals. Default is 'kde'.
+        target training values, of shape = [n_samples].
+    facet_size: int
+        numerical value representing the size (width) of each facet for the
+        pairwise plot. Units are in inches. Defaults to 2.
+    diag: str
+        type of plot to display on the diagonals. Default is 'kde'.
 
-        * 'kde' = density curves
-        * 'hist' = histograms
-        * 'None' = blank
+        * 'kde': density curves
+        * 'hist': histograms
 
     legend_title: string
-        Allows the user to specify the title of the legend.
-        If None is passed, the plot will have no legend and no colors based on y
+        allows the user to specify the title of the legend. If None is passed,
+        the plot will have no legend and no colors based on y.
+    **kwargs
+        additional keyword parameters will be passes to `sns.pairplot()`.
 
     Returns
     -------
     Displays a seaborn pairwise plot.
-        More fancy plotting options here:
-        http://stanford.edu/~mwaskom/software/seaborn/generated/seaborn
-        .pairplot.html
     """
     if y is not None:
         assert y.shape[0] == x_train.shape[0], (
-            "Dimensions of y {0} do not match dimensions of x {1}".format(
+            "Dimensions of y {0} do not match dimensions of x_train {1}".format(
                 y.shape[0], x_train.shape[0]))
-
-    # Scale the data if the user passed in a scaler
-    if scaler is not None:
-        x_train = scaler.transform(x_train)
-
-    # Perform PCA
+    # Obtain the projections of x_train
     x_projection = clf_pca.transform(x_train)
-
-    # create Pandas dataframe for pairwise plot of PCA comps
-    # using i+1 due to python's 0 listing.
-    col_names = ["PC{0}".format(i + 1) for i in range(n_comps)]
-    df = pd.DataFrame(x_projection[:, 0:n_comps], columns=col_names)
-
-    # display legend/colors according to user parameters
-    if y is not None and legend_title is not None:
-        df[legend_title] = y  # add Y response variable to PCA dataframe
-    if y is not None and legend_title is None:
-        df['Response'] = y
-        legend_title = 'Response'
-
-    # display the plot
-    sns.set_style("white")
-    sns.pairplot(df, hue=legend_title, diag_kind=diag, size=facet_size)
+    # Create a data frame to hold the projections of n_components PCs
+    col_names = ["PC{0}".format(i + 1) for i in range(n_components)]
+    df = pd.DataFrame(x_projection[:, 0:n_components], columns=col_names)
+    # Display legend and colors according to parameters
+    # if y is not None and legend_title is not None:
+    #     df[legend_title] = y  # add Y response variable to PCA dataframe
+    # if y is not None and legend_title is None:
+    #     df['Response'] = y
+    #     legend_title = 'Response'
+    # Generate the plot
+    if y is not None:
+        color = np.array(['r', 'b'], dtype='str')
+        colors = np.random.choice(color, size=y.shape[0])
+        # colormap = list(y).map(lambda x: colors[x])
+        # y = np.random.choice(color, size=y.shape[0])
+        labels = np.random.choice(np.array([0, 1]), size=y.shape[0])
+    # sns.set_style("white", {"axes.edgecolor": '0.7',
+    #                         "axes.facecolor": "#EBECF3"})
+    cmap = "Greys" if cmap is None else cmap
+    color = "#55A969" if y is None else y
+    sns.set_style("white", {"axes.linewidth": "0.8", "image.cmap": cmap})
+    sns.set_context("notebook")
+    print(sns.axes_style())
+    try:
+        # fig = sns.pairplot(df, hue=legend_title, diag_kind=diag,
+        #                    size=facet_size, **kwargs).savefig('hello.png')
+        # plt.show(fig)  # Need to specifically show the figure for some reason
+        fig = plt.figure(figsize=(10, 10))
+        ax = fig.add_subplot(1, 1, 1)
+        from pandas.tools.plotting import scatter_matrix
+        axes = scatter_matrix(df, ax=ax, alpha=0.7, figsize=(10, 10), diagonal=diag,
+                              marker='o', c=color, density_kwds={'c': '#6283B9'},
+                              hist_kwds={'facecolor': '#5A76A4',
+                                         'edgecolor': '#3D3D3D'})
+        fig.subplots_adjust(hspace=0.1, wspace=0.1)
+        axes_unwound = np.ravel(axes)
+        for i in range(axes_unwound.shape[0]):
+            ax = axes_unwound[i]
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+        plt.show()
+    except:
+        raise  # Re-raise the exception
+    finally:
+        sns.reset_orig()
