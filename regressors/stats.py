@@ -190,7 +190,7 @@ def coef_pval(clf, X, y):
     return p
 
 
-def fsat(clf, X, y):
+def f_stat(clf, X, y):
     """Calculate summary F-statistic for beta coefficients.
 
     Parameters
@@ -209,9 +209,8 @@ def fsat(clf, X, y):
     """
     n = X.shape[0]
     p = X.shape[1]
-    r2 = clf.score(X, y)
-    f = (r2 / p) / ((1 - r2) / (n - p - 1))
-    return f
+    r_squared = metrics.r2_score(y, clf.predict(X))
+    return (r_squared / p) / ((1 - r_squared) / (n - p - 1))
 
 
 def summary(clf, X, y, Xlabels):
@@ -221,7 +220,7 @@ def summary(clf, X, y, Xlabels):
     coef_pval(clf, X, y)
     coef_se(clf, X, y)
     metrics.mean_squared_error(y, clf.predict(X))
-    fsat(clf, X, y)
+    f_stat(clf, X, y)
 
     d = pd.DataFrame(index=['intercept'] + list(Xlabels),
                      columns=['estimate', 'std error', 't value', 'p value'])
@@ -233,5 +232,5 @@ def summary(clf, X, y, Xlabels):
 
     print('R_squared : ' + str(clf.score(X, y)))
     print('Adjusted R_squared : ' + str(adj_r2_score(clf, X, y)))
-    print('F stat : ' + str(fsat(clf, X, y)))
+    print('F stat : ' + str(f_stat(clf, X, y)))
     return d
