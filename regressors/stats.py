@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-"""This module contains functions for calculating various statistics and coefficients."""
+"""This module contains functions for calculating various statistics and
+coefficients."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 from sklearn.decomposition import PCA
-from regressors import supported_linear_models
+from regressors.regressors import supported_linear_models
 import numpy as np
 import pandas as pd
 import scipy
