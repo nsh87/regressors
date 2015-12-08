@@ -6,23 +6,6 @@ To use Regressors in a project::
 
     import regressors
 
-    #************************
-    # * Logistic Regression *
-    #************************
-    import statsmodels.api as sm
-    dta = sm.datasets.fair.load_pandas().data  # sample dataset from statsmodels module
-
-    dta['affair'] = (dta['affairs'] > 0).astype(float)  # define 'affair' column as categorical response; 1's and 0's
-    X = dta.ix[:, 0:8]  # subset the data to include only variable data
-    Y = dta['affair']
-
-    from sklearn.linear_model import LogisticRegression
-    lr = LogisticRegression(fit_intercept=False)  # create logistic regression classifier object
-    lr.fit(X,Y)  # fit the logistic regression model with X, Y data
-    results = logistic_regression(lr, X, Y)
-    # results returns a tuple of (lr_class, coefficient table (dataframe), sensitivity, specificity, and precision)
-
-
     #***********************************
     # * Plot Principal Component Pairs *
     #***********************************
