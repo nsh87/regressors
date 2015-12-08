@@ -32,7 +32,7 @@ test_requirements = [
 
 setup(
     name='regressors',
-    version='0.0.1',
+    version='0.0.2',
     description="Easy utilities for fitting various regressors, extracting "
                 "stats, and making relevant plots",
     long_description=readme + '\n\n' + history,
