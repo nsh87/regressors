@@ -5,6 +5,7 @@ Usage
 Below are some demonstrations of using Regressors in a project. We'll import a
 the Boston data set first to demonstrate the functions' usage::
 
+    import numpy as np
     from sklearn import datasets
     boston = datasets.load_boston()
     which_betas = np.ones(13, dtype=bool)
@@ -18,99 +19,71 @@ Obtaining Summary Statistics
 There are several functions provided that compute various statistics
 about some of the regression models in scikit-learn. These functions are:
 
-    1. :py:func:`regressors.stats.sse`
-    2. adj_r2_score(clf,X, y)
-    3. mse(clf, X, y)
-    4. ssr(clf, X, y)
-    5. ssto(clf, X, y)
-    6. r2_adj_score(clf,X, y)
-    7. se_betas(clf, X, y)
+    1. `regressors.stats.sse(clf, X, y)`
+    2. `regressors.stats.adj_r2_score(clf, X, y)`
+    7. `regressors.stats.coef_se(clf, X, y)`
     8. tval_betas(clf, X, y)
     9. pval_betas(clf, X, y)
     10. fsat(clf, X, y)
+    12. residuals(clf, X, y)
     11. summary(clf, X, y, Xlabels)
 
 An example with is developed below for a better understanding of these
-functions::
-
-    boston = datasets.load_boston()
-    X = boston.data
-    y = boston.target
-    Xlabels = boston.feature_names
+functions. Here, we use an ordinary least squares regression model, but another,
+such as Lasso, could be used.
 
 SSE
 ~~~
 
-To calculate the SSE:
+To calculate the SSE::
 
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    sse(clf, X, y)
+    ols.fit(X, y)
 
-output: 11080.2762841
+    stats.sse(ols, X, y)
 
-SSR
-~~~
+Output: 11299.555410604258
 
-To calculate the SSE:
 
+Adjusted R:sup:`2`
+~~~~~~~~~~~~~~~~~~
+
+To calculate the adjusted R2::
+
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    ssr(clf, X, y)
+    ols.fit(X, y)
 
-output: 31636.0191309
+    stats.adj_r2_score(ols, X, y)
 
-SSTO
-~~~~
+Output: 0.72903560136853518
 
-To calculate the SSTO:
-
-    ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    ssto(clf, X, y)
-
-output: 42716.295415
-
-Adjusted R2
-~~~~~~~~~~~
-
-To calculate the adjusted R2:
-
-    ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    r2_adj_score(clf,X, y)
-
-output: 0.740607742865
-
-MSE
-~~~
-
-To calculate the MSE:
-
-    ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    mse(clf, X, y)
-
-output: 22.5208867564
 
 Standard Error of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To calculate the standard error of betas coefficients:
+To calculate the standard error of beta coefficients::
 
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    se_betas(clf, X, y)
+    ols.fit(X, y)
 
-output : [  4.93910982e+00   3.17198514e-02   1.07507294e-02   5.61313621e-02
-            8.60206463e-01   3.61026491e+00   2.74628671e-01   9.67057645e-03
-            1.81300829e-01   6.18752720e-02   1.05924564e-03   8.94695520e-02
-            1.13100913e-03   4.23138697e-02]
+    stats.coef_se(ols, X, y)
+
+Output : array([  4.91564654e+00,   3.15831325e-02,   1.07052582e-02,
+                  5.58441441e-02,   3.59192651e+00,   2.72990186e-01,
+                  9.62874778e-03,   1.80529926e-01,   6.15688821e-02,
+                  1.05459120e-03,   8.89940838e-02,   1.12619897e-03,
+                  4.21280888e-02])
 
 T-values of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To calculate the t values betas coefficients:
+To calculate the t-values beta coefficients::
 
     ols = linear_model.LinearRegression()
     clf = ols.fit(X, y)
