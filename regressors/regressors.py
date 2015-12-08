@@ -160,6 +160,7 @@ class PCR(object):
             x_scaled = X
         x_reduced = self.prcomp.fit_transform(x_scaled)
         self.regression.fit(x_reduced, y)
+        return self
 
     def predict(self, X):
         """
@@ -180,7 +181,7 @@ class PCR(object):
         else:
             x_scaled = X
         x_reduced = self.prcomp.transform(x_scaled)
-        self.regression.predict(x_reduced)
+        return self.regression.predict(x_reduced)
 
     def score(self):
         pass
