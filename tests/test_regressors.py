@@ -16,8 +16,6 @@ import numpy as np
 import pandas as pd
 import unittest2 as unittest
 from sklearn import datasets
-from sklearn import metrics
-from sklearn import linear_model
 from sklearn.decomposition import PCA
 
 from regressors import regressors
