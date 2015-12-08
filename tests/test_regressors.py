@@ -115,7 +115,7 @@ class TestLinearRegression(unittest.TestCase):
                       "exception unexpectedly: {0}".format(e))
 
 
-class TestStatsResiduals(unittest.TestCase):
+class TestStats(unittest.TestCase):
 
     def setUp(self):
         pass
