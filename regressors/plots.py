@@ -20,6 +20,7 @@ from . import stats
 
 def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     """Plot residuals of a linear model.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -33,14 +34,12 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
         Defaults to 'standardized'.
 
         * 'raw' will return the raw residuals.
-        * 'standardized' will return the Pearson standardized residuals, also
-          known as internally studentized residuals, which is calculated as the
-          residuals divided by the square root of MSE (or the STD of the
-          residuals).
+        * 'standardized' will return the standardized residuals, also known as
+          internally studentized residuals, which is calculated as the residuals
+          divided by the square root of MSE (or the STD of the residuals).
         * 'studentized' will return the externally studentized residuals, which
           is calculated as the raw residuals divided by sqrt(LOO-MSE * (1 -
           leverage_score)).
-
     figsize : tuple
         A tuple indicating the size of the plot to be created, with format
         (x-axis, y-axis). Defaults to (10, 8).
