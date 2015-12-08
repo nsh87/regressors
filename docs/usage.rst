@@ -19,7 +19,7 @@ There are several functions provided that compute various statistics
 about some of the regression models in scikit-learn. These functions are:
 
     1. :py:func:`regressors.stats.sse()`
-    2. r2_adj_score(clf,X, y)
+    2. adj_r2_score(clf,X, y)
     3. mse(clf, X, y)
     4. ssr(clf, X, y)
     5. ssto(clf, X, y)
