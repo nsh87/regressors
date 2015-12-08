@@ -8,7 +8,6 @@ from __future__ import unicode_literals
 from sklearn import linear_model as lm
 import numpy as np
 import pandas as pd
-from regressors import stats
 
 supported_linear_models = (lm.LinearRegression, lm.Lasso, lm.Ridge,
                            lm.ElasticNet)
@@ -66,7 +65,6 @@ class LinearRegression(lm.LinearRegression):
         # Call parent .fit() method
         super(LinearRegression, self).fit(*args, **kwargs)
 
-
     def summary(self):
         """Return summary results of fitted model."""
         coeffs = np.concatenate((np.array([self.intercept_]), self.coef_))
@@ -74,9 +72,3 @@ class LinearRegression(lm.LinearRegression):
         summary = {'coef': pd.Series(coeffs, index=labels)}
         df = pd.DataFrame(summary)
         return df
-
-
-def summary(clf, X_train, y_train):
-    sse = stats.sse(clf, X_train, y_train)
-    # Put into pandas data frame
-    pass
