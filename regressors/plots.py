@@ -78,14 +78,14 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     return fig
 
 
-def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
+def plot_scree(clf_pca, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
                figsize=(10, 5)):
     """Create side-by-side scree plots for analyzing variance of principle
     components from PCA.
 
     Parameters
     ----------
-    clf : sklearn.decomposition.PCA
+    clf_pca : sklearn.decomposition.PCA
         A fitted scikit-learn PCA model.
     xlim : list
         X-axis range. If `required_var` is supplied, the maximum x-axis value
@@ -106,11 +106,11 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
         The Figure instance.
     """
     # Ensure we have the a PCA model
-    assert isinstance(clf, decomposition.PCA), (
+    assert isinstance(clf_pca, decomposition.PCA), (
         "Models of type {0} are not supported. Only models of type "
-        "sklearn.decomposition.PCA are supported.".format(type(clf)))
+        "sklearn.decomposition.PCA are supported.".format(type(clf_pca)))
     # Extract variances from the model
-    variances = clf.explained_variance_ratio_
+    variances = clf_pca.explained_variance_ratio_
     # Set plot style and scale up font size
     sns.set_style("whitegrid")
     sns.set(font_scale=1.2)
