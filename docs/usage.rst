@@ -46,8 +46,9 @@ To calculate the SSE::
 
     stats.sse(ols, X, y)
 
-Output: 11299.555410604258
+Output::
 
+    11299.555410604258
 
 Adjusted R-Squared
 ~~~~~~~~~~~~~~~~~~
@@ -61,7 +62,9 @@ To calculate the adjusted R-squared::
 
     stats.adj_r2_score(ols, X, y)
 
-Output: 0.72903560136853518
+Output::
+
+    0.72903560136853518
 
 
 Standard Error of Beta Coefficients
@@ -135,7 +138,9 @@ To calculate the F-statistic of beta coefficients::
 
     stats.f_stat(ols, X, y)
 
-Output: 114.22612261689403
+Output::
+
+    114.22612261689403
 
 Summary
 ~~~~~~~
