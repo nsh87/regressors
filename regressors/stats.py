@@ -213,7 +213,19 @@ def f_stat(clf, X, y):
     return (r_squared / p) / ((1 - r_squared) / (n - p - 1))
 
 
-def summary(clf, X, y, Xlabels):
+def summary(clf, X, y, xlabels=None):
+    # Check and/or make xlabels
+    ncols = X.shape[1]
+    if xlabels is None:
+        xlabels = np.array(
+            ['x{0}'.format(i) for i in range(ncols)], dtype='str')
+    elif isinstance(xlabels, (tuple, list)):
+        xlabels = np.array(xlabels, dtype='str')
+    # Make sure dims of xlabels matches dims of X
+    if xlabels.shape[0] != ncols:
+        raise AssertionError(
+            "Dimension of xlabels {0} does not match "
+            "X {1}.".format(xlabels.shape, X.shape))
     sse(clf, X, y)
     adj_r2_score(clf, X, y)
     coef_tval(clf, X, y)
@@ -222,7 +234,7 @@ def summary(clf, X, y, Xlabels):
     metrics.mean_squared_error(y, clf.predict(X))
     f_stat(clf, X, y)
 
-    d = pd.DataFrame(index=['intercept'] + list(Xlabels),
+    d = pd.DataFrame(index=['intercept'] + list(xlabels),
                      columns=['estimate', 'std error', 't value', 'p value'])
 
     d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
