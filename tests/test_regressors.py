@@ -320,22 +320,6 @@ class TestPCRBetaCoef(unittest.TestCase):
         self.assertEqual(beta_coef.shape, ols.coef_.shape)
 
 
-class TestPlots(unittest.TestCase):
-
-    def test_pca_pairwise_plot(self):
-        scaler = preprocessing.StandardScaler()
-        x_scaled = scaler.fit_transform(X)
-        pcomp = decomposition.PCA()
-        pcomp.fit(x_scaled)
-        # plots.plot_pca_pairs(pcomp, x_scaled, y=y, diag='kde', cmap="GnBu_r")
-        plots.plot_pca_pairs(pcomp, x_scaled, diag='kde')
-    # def test_scree_plot(self):
-    #     scaler = preprocessing.StandardScaler().fit(X)
-    #     transformed = scaler.transform(X)
-    #     prcomp = decomposition.PCA()
-    #     prcomp.fit(transformed)
-    #     fig = plots.plot_scree(prcomp)
-
 if __name__ == '__main__':
     import sys
     sys.exit(unittest.main())

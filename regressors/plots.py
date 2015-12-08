@@ -198,44 +198,41 @@ def qq_plot(clf, X, y, figsize=(7, 7)):
     return fig
 
 
-def plot_pca_pairs(clf_pca, x_train, n_components=3, y=None, facet_size=2,
-                   diag='kde', legend_title=None, cmap=None, **kwargs):
+def plot_pca_pairs(clf_pca, x_train, y=None, n_components=3, diag='kde',
+                   cmap=None, figsize=(10, 10)):
     """
     Create pairwise plots of principal components from x data.
 
-    Colors the components according to the y values. Plots are generated with
-    the `seaborn` package. More plotting options are available at
-    http://stanford.edu/~mwaskom/software/seaborn/generated/seaborn.pairplot.
+    Colors the components according to the `y` values.
 
     Parameters
     ----------
     clf_pca : sklearn.decomposition.PCA
-        a fitted scikit-learn PCA model.
+        A fitted scikit-learn PCA model.
     x_train : numpy.ndarray
-        training data used to fit `clf_pca`, either scaled or un-scaled,
+        Training data used to fit `clf_pca`, either scaled or un-scaled,
         depending on how `clf_pca` was fit.
-    n_components: int
-        desired number of principal components to plot. Defaults to 3.
     y : numpy.ndarray
-        target training values, of shape = [n_samples].
-    facet_size: int
-        numerical value representing the size (width) of each facet for the
-        pairwise plot. Units are in inches. Defaults to 2.
-    diag: str
-        type of plot to display on the diagonals. Default is 'kde'.
+        Target training values, of shape = [n_samples].
+    n_components: int
+        Desired number of principal components to plot. Defaults to 3.
+    diag : str
+        Type of plot to display on the diagonals. Default is 'kde'.
 
         * 'kde': density curves
         * 'hist': histograms
 
-    legend_title: string
-        allows the user to specify the title of the legend. If None is passed,
-        the plot will have no legend and no colors based on y.
-    **kwargs
-        additional keyword parameters will be passes to `sns.pairplot()`.
+    cmap : str
+        A string representation of a Seaborn color map. See available maps:
+        https://stanford.edu/~mwaskom/software/seaborn/tutorial/color_palettes.
+    figsize : tuple
+        A tuple indicating the size of the plot to be created, with format
+        (x-axis, y-axis). Defaults to (10, 10).
 
     Returns
     -------
-    Displays a seaborn pairwise plot.
+    matplotlib.figure.Figure
+        The Figure instance.
     """
     if y is not None:
         assert y.shape[0] == x_train.shape[0], (
@@ -246,38 +243,27 @@ def plot_pca_pairs(clf_pca, x_train, n_components=3, y=None, facet_size=2,
     # Create a data frame to hold the projections of n_components PCs
     col_names = ["PC{0}".format(i + 1) for i in range(n_components)]
     df = pd.DataFrame(x_projection[:, 0:n_components], columns=col_names)
-    # Display legend and colors according to parameters
-    # if y is not None and legend_title is not None:
-    #     df[legend_title] = y  # add Y response variable to PCA dataframe
-    # if y is not None and legend_title is None:
-    #     df['Response'] = y
-    #     legend_title = 'Response'
     # Generate the plot
-    if y is not None:
-        color = np.array(['r', 'b'], dtype='str')
-        colors = np.random.choice(color, size=y.shape[0])
-        # colormap = list(y).map(lambda x: colors[x])
-        # y = np.random.choice(color, size=y.shape[0])
-        labels = np.random.choice(np.array([0, 1]), size=y.shape[0])
-    # sns.set_style("white", {"axes.edgecolor": '0.7',
-    #                         "axes.facecolor": "#EBECF3"})
     cmap = "Greys" if cmap is None else cmap
     color = "#55A969" if y is None else y
     sns.set_style("white", {"axes.linewidth": "0.8", "image.cmap": cmap})
     sns.set_context("notebook")
-    print(sns.axes_style())
     try:
-        # fig = sns.pairplot(df, hue=legend_title, diag_kind=diag,
-        #                    size=facet_size, **kwargs).savefig('hello.png')
-        # plt.show(fig)  # Need to specifically show the figure for some reason
-        fig = plt.figure(figsize=(10, 10))
+        # Create figure instance with subplot and populate the subplot with
+        # the scatter matrix. You need to do this so you can access the figure
+        # properties later to increase distance between subplots. If you don't,
+        # Pandas will create its own figure with a tight layout.
+        fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot(1, 1, 1)
         from pandas.tools.plotting import scatter_matrix
-        axes = scatter_matrix(df, ax=ax, alpha=0.7, figsize=(10, 10), diagonal=diag,
-                              marker='o', c=color, density_kwds={'c': '#6283B9'},
+        axes = scatter_matrix(df, ax=ax, alpha=0.7, figsize=figsize,
+                              diagonal=diag, marker='o', c=color,
+                              density_kwds={'c': '#6283B9'},
                               hist_kwds={'facecolor': '#5A76A4',
                                          'edgecolor': '#3D3D3D'})
+        # Increase space between subplots
         fig.subplots_adjust(hspace=0.1, wspace=0.1)
+        # Loop through subplots and remove top and right axes
         axes_unwound = np.ravel(axes)
         for i in range(axes_unwound.shape[0]):
             ax = axes_unwound[i]
@@ -286,5 +272,8 @@ def plot_pca_pairs(clf_pca, x_train, n_components=3, y=None, facet_size=2,
         plt.show()
     except:
         raise  # Re-raise the exception
+    else:
+        sns.reset_orig()
+        return fig
     finally:
         sns.reset_orig()
