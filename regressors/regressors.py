@@ -17,7 +17,7 @@ from . import stats
 
 def pcr_beta_coef(clf_regress, clf_pca):
     """Calculate the beta coefficients in real-space (instead of PCA-space)
-    from principle components regression.
+    from principal components regression.
 
     Parameters
     ----------
@@ -40,7 +40,7 @@ def pcr_beta_coef(clf_regress, clf_pca):
 
 
 class PCR(object):
-    """Principle components regression model.
+    """Principal components regression model.
 
     This model solves a regression model after standard scaling the X
     data and performing PCA to reduce the dimensionality of X. This class
@@ -148,7 +148,7 @@ class PCR(object):
             Beta coefficients, corresponding to coefficients in the original
             space and dimension of X. These are calculated as
             :math:`B = A \cdot P`, where :math:`A` is a vector of the
-            coefficients obtained from regression on the principle components
+            coefficients obtained from regression on the principal components
             and :math:`P` is the matrix of loadings from PCA.
         """
         return pcr_beta_coef(self.regression, self.prcomp)

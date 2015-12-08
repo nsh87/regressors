@@ -48,7 +48,7 @@ setup(
     install_requires=requirements,
     license="ISCL",
     zip_safe=False,
-    keywords='regression, lasso, ridge, principle components regression, '
+    keywords='regression, lasso, ridge, principal components regression, '
              'elastic net, linear model',
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',

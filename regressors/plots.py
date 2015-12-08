@@ -80,7 +80,7 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
 
 def plot_scree(clf_pca, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
                figsize=(10, 5)):
-    """Create side-by-side scree plots for analyzing variance of principle
+    """Create side-by-side scree plots for analyzing variance of principal
     components from PCA.
 
     Parameters
