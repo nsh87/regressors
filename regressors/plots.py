@@ -8,15 +8,14 @@ from __future__ import unicode_literals
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import scipy
 import seaborn.apionly as sns
-import sklearn.decomposition as dcomp
 import statsmodels.api as sm
+from sklearn import decomposition
 
 from . import regressors
 from . import stats
-# TODO: Check these imports
-import pandas as pd
 
 
 def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
@@ -106,7 +105,7 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
         The Figure instance.
     """
     # Ensure we have the a PCA model
-    assert isinstance(clf, dcomp.PCA), (
+    assert isinstance(clf, decomposition.PCA), (
         "Models of type {0} are not supported. Only models of type "
         "sklearn.decomposition.PCA are supported.".format(type(clf))
     )
