@@ -28,7 +28,7 @@ about some of the regression models in scikit-learn. These functions are:
     7. `regressors.stats.residuals(clf, X, y)`
     8. `regressors.stats.summary(clf, X, y, Xlabels)`
 
-The last function `summary()` outputs the metrics seen above in a nice format.
+The last function, `summary()`, outputs the metrics seen above in a nice format.
 
 An example with is developed below for a better understanding of these
 functions. Here, we use an ordinary least squares regression model, but another,
@@ -151,31 +151,57 @@ To obtain the summary table::
     xlabels = boston.feature_names[which_betas]
     stats.summary(ols, X, y, xlabels)
 
-Output:
+Output::
 
-Residuals:
-     Min      1Q  Median      3Q      Max
--26.3743 -1.9207  0.6648  2.8112  13.3794
+    Residuals:
+         Min      1Q  Median      3Q      Max
+    -26.3743 -1.9207  0.6648  2.8112  13.3794
 
 
-Coefficients:
-             Estimate  Std. Error  t value   p value
-_intercept  36.925033    4.915647   7.5117  0.000000
-CRIM        -0.112227    0.031583  -3.5534  0.000416
-ZN           0.047025    0.010705   4.3927  0.000014
-INDUS        0.040644    0.055844   0.7278  0.467065
-NOX        -17.396989    3.591927  -4.8434  0.000002
-RM           3.845179    0.272990  14.0854  0.000000
-AGE          0.002847    0.009629   0.2957  0.767610
-DIS         -1.485557    0.180530  -8.2289  0.000000
-RAD          0.327895    0.061569   5.3257  0.000000
-TAX         -0.013751    0.001055 -13.0395  0.000000
-PTRATIO     -0.991733    0.088994 -11.1438  0.000000
-B            0.009827    0.001126   8.7256  0.000000
-LSTAT       -0.534914    0.042128 -12.6973  0.000000
----
-R-squared:  0.73547,    Adjusted R-squared:  0.72904
-F-statistic: 114.23 on 12 features
+    Coefficients:
+                 Estimate  Std. Error  t value   p value
+    _intercept  36.925033    4.915647   7.5117  0.000000
+    CRIM        -0.112227    0.031583  -3.5534  0.000416
+    ZN           0.047025    0.010705   4.3927  0.000014
+    INDUS        0.040644    0.055844   0.7278  0.467065
+    NOX        -17.396989    3.591927  -4.8434  0.000002
+    RM           3.845179    0.272990  14.0854  0.000000
+    AGE          0.002847    0.009629   0.2957  0.767610
+    DIS         -1.485557    0.180530  -8.2289  0.000000
+    RAD          0.327895    0.061569   5.3257  0.000000
+    TAX         -0.013751    0.001055 -13.0395  0.000000
+    PTRATIO     -0.991733    0.088994 -11.1438  0.000000
+    B            0.009827    0.001126   8.7256  0.000000
+    LSTAT       -0.534914    0.042128 -12.6973  0.000000
+    ---
+    R-squared:  0.73547,    Adjusted R-squared:  0.72904
+    F-statistic: 114.23 on 12 features
+
+Plotting
+--------
+
+Several functions are provided to quickly and easily make plots useful for
+judging a model. We will continue using the Boston data set referenced above.
+
+Principle Components Pairs
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To generate a pairwise plot of principle components::
+
+    from sklearn import preprocessing
+    from sklearn import decomposition
+    from regressors import plots
+    scaler = preprocessing.StandardScaler()
+    x_scaled = scaler.fit_transform(X)
+    pcomp = decomposition.PCA()
+    pcomp.fit(x_scaled)
+
+    plots.plot_pca_pairs(pcomp, X, y, n_components=4, cmap="GnBu")
+
+Plots:
+
+.. image:: pca_pairs_plot.png
+
 
     #***********************************
     # * Plot Principal Component Pairs *
@@ -222,3 +248,4 @@ F-statistic: 114.23 on 12 features
     # send the OLS and PCA object into the pca_beta_coeffs() fxn
     print(pca_beta_coeffs(ols, pcomp))
 
+.. image:: _static/pca_pairs_plot.png
