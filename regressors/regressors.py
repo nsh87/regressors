@@ -78,6 +78,5 @@ class LinearRegression(lm.LinearRegression):
 
 def summary(clf, X_train, y_train):
     sse = stats.sse(clf, X_train, y_train)
-
     # Put into pandas data frame
-    return df
+    pass
