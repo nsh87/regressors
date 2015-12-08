@@ -127,6 +127,17 @@ class PCR(object):
         """
         return stats.pcr_beta_coef(self.regression, self.prcomp)
 
+    @property
+    def intercept_(self):
+        """
+        Returns
+        -------
+        float
+            The intercept for the regression model, both in PCA-space and
+            in the original X-space.
+        """
+        return self.regression.intercept_
+
     def fit(self, X, y):
         if self.scaler is not None:
             x_scaled = self.scaler.fit_transform(X)

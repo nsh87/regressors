@@ -257,6 +257,11 @@ class TestPCRClass(unittest.TestCase):
         pcr.fit(X, y)
         self.assertEqual(X.shape[1], pcr.beta_coef_.shape[0])
 
+    def test_get_intercept_from_pcr_model(self):
+        pcr = regressors.PCR(n_components=10)
+        pcr.fit(X, y)
+        self.assertIsInstance(pcr.intercept_, float)
+
 
 if __name__ == '__main__':
     import sys
