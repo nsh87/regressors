@@ -296,6 +296,7 @@ class TestSummaryStats(unittest.TestCase):
                           "supported linear models failed "
                           "unexpectedly: {0}".format(e))
 
+
 class TestPCRBetaCoef(unittest.TestCase):
 
     def setUp(self):
