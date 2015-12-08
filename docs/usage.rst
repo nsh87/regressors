@@ -66,7 +66,6 @@ Output::
 
     0.72903560136853518
 
-
 Standard Error of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
