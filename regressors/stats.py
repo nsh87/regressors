@@ -229,6 +229,8 @@ def summary(clf, X, y, xlabels=None):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+    xlabels : list, tuple
+        The labels for the predictors.
     """
     # Check and/or make xlabels
     ncols = X.shape[1]
