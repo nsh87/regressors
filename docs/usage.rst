@@ -76,11 +76,13 @@ To calculate the standard error of beta coefficients::
 
     stats.coef_se(ols, X, y)
 
-Output: array([  4.91564654e+00,   3.15831325e-02,   1.07052582e-02,
-                  5.58441441e-02,   3.59192651e+00,   2.72990186e-01,
-                  9.62874778e-03,   1.80529926e-01,   6.15688821e-02,
-                  1.05459120e-03,   8.89940838e-02,   1.12619897e-03,
-                  4.21280888e-02])
+Output::
+
+    array([  4.91564654e+00,   3.15831325e-02,   1.07052582e-02,
+             5.58441441e-02,   3.59192651e+00,   2.72990186e-01,
+             9.62874778e-03,   1.80529926e-01,   6.15688821e-02,
+             1.05459120e-03,   8.89940838e-02,   1.12619897e-03,
+             4.21280888e-02])
 
 T-values of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -94,10 +96,12 @@ To calculate the t-values beta coefficients::
 
     stats.coef_tval(ols, X, y)
 
-Output: array([  7.51173468,  -3.55339694,   4.39272142,   0.72781367,
-                -4.84335873,  14.08541122,   0.29566133,  -8.22887   ,
-                 5.32566707, -13.03948192, -11.14380943,   8.72558338,
-                -12.69733326])
+Output::
+
+    array([  7.51173468,  -3.55339694,   4.39272142,   0.72781367,
+            -4.84335873,  14.08541122,   0.29566133,  -8.22887   ,
+             5.32566707, -13.03948192, -11.14380943,   8.72558338,
+            -12.69733326])
 
 P-values of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -111,11 +115,13 @@ To calculate the p-values of beta coefficients::
 
     stats.coef_pval(ols, X, y)
 
-Output: array([  2.66897615e-13,   4.15972994e-04,   1.36473287e-05,
-                 4.67064962e-01,   1.70032518e-06,   0.00000000e+00,
-                 7.67610259e-01,   1.55431223e-15,   1.51691918e-07,
-                 0.00000000e+00,   0.00000000e+00,   0.00000000e+00,
-                 0.00000000e+00])
+Output::
+
+    array([  2.66897615e-13,   4.15972994e-04,   1.36473287e-05,
+             4.67064962e-01,   1.70032518e-06,   0.00000000e+00,
+             7.67610259e-01,   1.55431223e-15,   1.51691918e-07,
+             0.00000000e+00,   0.00000000e+00,   0.00000000e+00,
+             0.00000000e+00])
 
 F-statistic
 ~~~~~~~~~~~
@@ -200,7 +206,7 @@ To generate a pairwise plot of principle components::
 
 Plots:
 
-.. image:: pca_pairs_plot.png
+.. image:: _static/pca_pairs_plot.png
 
 
 Principle Components Regression (PCR)
@@ -235,11 +241,11 @@ To transform those components back to the space of the original X data::
     pcr.fit(X, y)
     pcr.beta_coef_
 
-Output: array([-0.96384079,  1.09565914,  0.27855742, -2.0139296 ,  2.69901773,
-                0.08005632, -3.12506044,  2.85224741, -2.31531704, -2.14492552,
-                0.89624424, -3.81608008])
+Output::
+    array([-0.96384079,  1.09565914,  0.27855742, -2.0139296 ,  2.69901773,
+            0.08005632, -3.12506044,  2.85224741, -2.31531704, -2.14492552,
+            0.89624424, -3.81608008])
 
 Note that the intercept is the same for the X space and the PCA space, so
 simply access that directly with ``pcr.self.regression.intercept_``.
 
-.. image:: _static/pca_pairs_plot.png
