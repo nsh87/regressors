@@ -214,6 +214,18 @@ def f_stat(clf, X, y):
 
 
 def summary(clf, X, y, xlabels=None):
+    """
+    Output summary statistics for a fitted regression model.
+
+    Parameters
+    ----------
+    clf : sklearn.linear_model
+        A scikit-learn linear model classifier with a `predict()` method.
+    X : numpy.ndarray
+        Training data used to fit the classifier.
+    y : numpy.ndarray
+        Target training values, of shape = [n_samples].
+    """
     # Check and/or make xlabels
     ncols = X.shape[1]
     if xlabels is None:
@@ -226,23 +238,33 @@ def summary(clf, X, y, xlabels=None):
         raise AssertionError(
             "Dimension of xlabels {0} does not match "
             "X {1}.".format(xlabels.shape, X.shape))
-    sse(clf, X, y)
-    adj_r2_score(clf, X, y)
-    coef_tval(clf, X, y)
-    coef_pval(clf, X, y)
-    coef_se(clf, X, y)
-    metrics.mean_squared_error(y, clf.predict(X))
-    f_stat(clf, X, y)
-
-    d = pd.DataFrame(index=['intercept'] + list(xlabels),
-                     columns=['estimate', 'std error', 't value', 'p value'])
-
-    d['estimate'] = np.array([clf.intercept_] + list(clf.coef_))
-    d['std error'] = coef_se(clf, X, y)
-    d['t value'] = coef_tval(clf, X, y)
-    d['p value'] = coef_pval(clf, X, y)
-
-    print('R_squared : ' + str(clf.score(X, y)))
-    print('Adjusted R_squared : ' + str(adj_r2_score(clf, X, y)))
-    print('F stat : ' + str(f_stat(clf, X, y)))
-    return d
+    # Create data frame of coefficient estimates and associated stats
+    coef_df = pd.DataFrame(
+        index=['_intercept'] + list(xlabels),
+        columns=['Estimate', 'Std. Error', 't value', 'p value']
+    )
+    coef_df['Estimate'] = np.concatenate(
+        (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6)))
+    coef_df['Std. Error'] = np.round(coef_se(clf, X, y), 6)
+    coef_df['t value'] = np.round(coef_tval(clf, X, y), 4)
+    coef_df['p value'] = np.round(coef_pval(clf, X, y), 6)
+    # Create data frame to summarize residuals
+    resids = residuals(clf, X, y, r_type='raw')
+    resids_df = pd.DataFrame({
+        'Min': pd.Series(np.round(resids.min(), 4)),
+        '1Q': pd.Series(np.round(np.percentile(resids, q=25), 4)),
+        'Median': pd.Series(np.round(np.median(resids), 4)),
+        '3Q': pd.Series(np.round(np.percentile(resids, q=75), 4)),
+        'Max': pd.Series(np.round(resids.max(), 4)),
+    })
+    # Output results
+    print("Residuals:")
+    print(resids_df.to_string(index=False))
+    print('\n')
+    print('Coefficients:')
+    print(coef_df.to_string(index=True))
+    print('---')
+    print('R-squared:  {0:.5f},    Adjusted R-squared:  {1:.5f}'.format(
+        metrics.r2_score(y, clf.predict(X)), adj_r2_score(clf, X, y)))
+    print('Summary F-statistic: {0:.2f} on {1} features'.format(
+        f_stat(clf, X, y), ncols))
