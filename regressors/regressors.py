@@ -139,9 +139,3 @@ class PCR(object):
     def score(self):
         pass
 
-
-def summary(clf, X_train, y_train):
-    sse = stats.sse(clf, X_train, y_train)
-
-    # Put into pandas data frame
-    return sse
