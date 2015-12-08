@@ -17,6 +17,11 @@ matrix:
     - python: 3.3
     - python: 3.4
     - python: 3.5
+addons:
+  apt:
+    packages:
+    - texlive-latex-recommended
+    - texlive-fonts-recommended
 install:
   - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
       wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
