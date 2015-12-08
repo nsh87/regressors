@@ -187,7 +187,14 @@ Plotting
 --------
 
 Several functions are provided to quickly and easily make plots useful for
-judging a model. We will continue using the Boston data set referenced above.
+judging a model.
+
+    1. `regressors.plots.plot_residuals(clf, X, y, r_type, figsize)`
+    2. `regressors.plots.plot_qq(clf, X, y, figsize)`
+    3. `regressors.plots.plot_pca_pairs(clf_pca, x_train, y, n_components, diag, cmap, figsize)`
+    4. `regressors.plots.plot_scree(clf_pca, xlim, ylim, required_var, figsize)`
+
+We will continue using the Boston data set referenced above.
 
 Residuals
 ~~~~~~~~~
