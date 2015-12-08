@@ -146,7 +146,7 @@ def coef_se(clf, X, y):
 
 
 def coef_tval(clf, X, y):
-    """Calculate t-statistic for betas coefficients.
+    """Calculate t-statistic for beta coefficients.
 
     Parameters
     ----------
@@ -168,7 +168,7 @@ def coef_tval(clf, X, y):
 
 
 def coef_pval(clf, X, y):
-    """Calculate p-values for betas coefficients.
+    """Calculate p-values for beta coefficients.
 
     Parameters
     ----------
@@ -191,7 +191,8 @@ def coef_pval(clf, X, y):
 
 
 def fsat(clf, X, y):
-    """Calculate overall F statistic for betas coefficients.
+    """Calculate summary F-statistic for beta coefficients.
+
     Parameters
     ----------
     clf : sklearn.linear_model
@@ -200,10 +201,11 @@ def fsat(clf, X, y):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+
     Returns
     -------
-    integer
-    integer of F statistic value.
+    float
+        The F-statistic value.
     """
     n = X.shape[0]
     p = X.shape[1]
