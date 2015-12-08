@@ -139,6 +139,21 @@ class PCR(object):
         return self.regression.intercept_
 
     def fit(self, X, y):
+        """
+        Fit the PCR model.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Training data.
+        y : numpy.ndarray
+            Target values.
+
+        Returns
+        -------
+        regression.PCR
+            An instance of self.
+        """
         if self.scaler is not None:
             x_scaled = self.scaler.fit_transform(X)
         else:
@@ -147,6 +162,19 @@ class PCR(object):
         self.regression.fit(x_reduced, y)
 
     def predict(self, X):
+        """
+        Predict using the PCR model.
+
+        Parameters
+        ----------
+        X : numpy.ndarray
+            Samples to predict values from.
+
+        Returns
+        -------
+        numpy.ndarray
+            Predicted values.
+        """
         if self.scaler is not None:
             x_scaled = self.scaler.fit_transform(X)
         else:
