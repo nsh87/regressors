@@ -21,12 +21,14 @@ about some of the regression models in scikit-learn. These functions are:
 
     1. `regressors.stats.sse(clf, X, y)`
     2. `regressors.stats.adj_r2_score(clf, X, y)`
-    7. `regressors.stats.coef_se(clf, X, y)`
-    8. tval_betas(clf, X, y)
-    9. pval_betas(clf, X, y)
-    10. fsat(clf, X, y)
-    12. residuals(clf, X, y)
-    11. summary(clf, X, y, Xlabels)
+    3. `regressors.stats.coef_se(clf, X, y)`
+    4. `regressors.stats.coef_tval(clf, X, y)`
+    5. `regressors.stats.coef_pval(clf, X, y)`
+    6. `regressors.stats.f_stat(clf, X, y)`
+    7. `regressors.stats.residuals(clf, X, y)`
+    8. `regressors.stats.summary(clf, X, y, Xlabels)`
+
+The last function `summary()` outputs the metrics seen above in a nice format.
 
 An example with is developed below for a better understanding of these
 functions. Here, we use an ordinary least squares regression model, but another,
@@ -74,7 +76,7 @@ To calculate the standard error of beta coefficients::
 
     stats.coef_se(ols, X, y)
 
-Output : array([  4.91564654e+00,   3.15831325e-02,   1.07052582e-02,
+Output: array([  4.91564654e+00,   3.15831325e-02,   1.07052582e-02,
                   5.58441441e-02,   3.59192651e+00,   2.72990186e-01,
                   9.62874778e-03,   1.80529926e-01,   6.15688821e-02,
                   1.05459120e-03,   8.89940838e-02,   1.12619897e-03,
@@ -85,73 +87,95 @@ T-values of Beta Coefficients
 
 To calculate the t-values beta coefficients::
 
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    tval_betas(clf, X, y)
+    ols.fit(X, y)
 
-output : [  7.38819436  -3.37865884   4.31554158   0.37163252   3.12548384
-            -4.92921132  13.85417062   0.07766463  -8.13983478   4.93985769
-            -11.63974227 -10.65684955   8.30454194 -12.41830721]
+    stats.coef_tval(ols, X, y)
+
+Output: array([  7.51173468,  -3.55339694,   4.39272142,   0.72781367,
+                -4.84335873,  14.08541122,   0.29566133,  -8.22887   ,
+                 5.32566707, -13.03948192, -11.14380943,   8.72558338,
+                -12.69733326])
 
 P-values of Beta Coefficients
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To calculate the p values of betas coefficients:
+To calculate the p-values of beta coefficients::
 
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    pval_betas(clf, X, y)
+    ols.fit(X, y)
 
-output : [  6.20392626e-13   7.84699819e-04   1.91636535e-05   7.10322348e-01
-            1.87729071e-03   1.12154925e-06   0.00000000e+00   9.38125595e-01
-            3.10862447e-15   1.06468914e-06   0.00000000e+00   0.00000000e+00
-            8.88178420e-16   0.00000000e+00]
+    stats.coef_pval(ols, X, y)
+
+Output: array([  2.66897615e-13,   4.15972994e-04,   1.36473287e-05,
+                 4.67064962e-01,   1.70032518e-06,   0.00000000e+00,
+                 7.67610259e-01,   1.55431223e-15,   1.51691918e-07,
+                 0.00000000e+00,   0.00000000e+00,   0.00000000e+00,
+                 0.00000000e+00])
 
 F-statistic
 ~~~~~~~~~~~
 
-To calculate the F statistic of betas coefficients:
+To calculate the F-statistic of beta coefficients::
 
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    fsat(clf, X, y)
+    ols.fit(X, y)
 
-output : 108.057020999
+    stats.f_stat(ols, X, y)
 
-Summary Statistic Table
-~~~~~~~~~~~~~~~~~~~~~~~
+Output: 114.22612261689403
 
-The summary statistic table calls all the functions above and generate the statitics
-in a more appropriate format.
+Summary
+~~~~~~~
 
-To obtain the summary table:
+The summary statistic table calls many of the stats outputs the statistics in
+an pretty format, similar to that seen in R.
 
+The coefficients can be labeled more descriptively by passing in a list of
+lables. If no labels are provided, they will be generated in the format x1, x2,
+x3, etc.
+
+To obtain the summary table::
+
+    from sklearn import linear_model
+    from regressors import stats
     ols = linear_model.LinearRegression()
-    clf = ols.fit(X, y)
-    summary(clf, X, y)
+    ols.fit(X, y)
 
-output :
+    xlabels = boston.feature_names[which_betas]
+    stats.summary(ols, X, y, xlabels)
 
-R_squared : 0.740607742865
-Adjusted R_squared : 0.740607742865
-F stat : 108.057020999
+Output:
 
-            estimate  std error    t value       p value
-intercept  36.491103   4.939110   7.388194  6.203926e-13
-CRIM       -0.107171   0.031720  -3.378659  7.846998e-04
-ZN          0.046395   0.010751   4.315542  1.916365e-05
-INDUS       0.020860   0.056131   0.371633  7.103223e-01
-CHAS        2.688561   0.860206   3.125484  1.877291e-03
-NOX       -17.795759   3.610265  -4.929211  1.121549e-06
-RM          3.804752   0.274629  13.854171  0.000000e+00
-AGE         0.000751   0.009671   0.077665  9.381256e-01
-DIS        -1.475759   0.181301  -8.139835  3.108624e-15
-RAD         0.305655   0.061875   4.939858  1.064689e-06
-TAX        -0.012329   0.001059 -11.639742  0.000000e+00
-PTRATIO    -0.953464   0.089470 -10.656850  0.000000e+00
-B           0.009393   0.001131   8.304542  8.881784e-16
-LSTAT      -0.525467   0.042314 -12.418307  0.000000e+00
+Residuals:
+     Min      1Q  Median      3Q      Max
+-26.3743 -1.9207  0.6648  2.8112  13.3794
 
+
+Coefficients:
+             Estimate  Std. Error  t value   p value
+_intercept  36.925033    4.915647   7.5117  0.000000
+CRIM        -0.112227    0.031583  -3.5534  0.000416
+ZN           0.047025    0.010705   4.3927  0.000014
+INDUS        0.040644    0.055844   0.7278  0.467065
+NOX        -17.396989    3.591927  -4.8434  0.000002
+RM           3.845179    0.272990  14.0854  0.000000
+AGE          0.002847    0.009629   0.2957  0.767610
+DIS         -1.485557    0.180530  -8.2289  0.000000
+RAD          0.327895    0.061569   5.3257  0.000000
+TAX         -0.013751    0.001055 -13.0395  0.000000
+PTRATIO     -0.991733    0.088994 -11.1438  0.000000
+B            0.009827    0.001126   8.7256  0.000000
+LSTAT       -0.534914    0.042128 -12.6973  0.000000
+---
+R-squared:  0.73547,    Adjusted R-squared:  0.72904
+F-statistic: 114.23 on 12 features
 
     #***********************************
     # * Plot Principal Component Pairs *
