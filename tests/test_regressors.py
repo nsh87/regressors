@@ -198,8 +198,9 @@ class TestStats(unittest.TestCase):
             try:
                 stats.coef_se(clf, X, y).shape
             except Exception as e:
-                self.fail("Testing adjusted R2 function for supported linear "
-                          "models failed unexpectedly: {0}".format(e))
+                self.fail("Testing standard error of coefficients function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
 
     def test_error_not_raised_by_coef_tval(self):
         # Test that assertion is not raise for supported models
@@ -209,8 +210,9 @@ class TestStats(unittest.TestCase):
             try:
                 stats.coef_tval(clf, X, y).shape
             except Exception as e:
-                self.fail("Testing adjusted R2 function for supported linear "
-                          "models failed unexpectedly: {0}".format(e))
+                self.fail("Testing t-values of coefficients function for "
+                          "supported linear models failed "
+                          "unexpectedly: {0}".format(e))
 
 if __name__ == '__main__':
     import sys
