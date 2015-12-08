@@ -284,8 +284,8 @@ def pca_beta_coeffs(clf_regress, clf_pca):
     Returns
     -------
     np.ndarray
-        An array of the real-space beta coefficients from Principal Component
-        Regression
+        An array of the real-space beta coefficients from Principal Components
+        Regression.
     """
     # Ensure we only calculate coefficients using classifiers we have tested
     assert isinstance(clf_regress, supported_linear_models), (
