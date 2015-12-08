@@ -13,7 +13,7 @@ import scipy
 from sklearn import metrics
 from sklearn.decomposition import PCA
 
-from . import regressors
+from . import _utils
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -101,7 +101,7 @@ def sse(clf, X, y):
 
 
 def adj_r2_score(clf, X, y):
-    """Calculate the adjusted R:superscript:`2` of the model.
+    """Calculate the adjusted :math:`R^2` of the model.
 
     Parameters
     ----------
@@ -115,7 +115,7 @@ def adj_r2_score(clf, X, y):
     Returns
     -------
     float
-        The adjusted R:superscript:`2` of the model.
+        The adjusted :math:`R^2` of the model.
     """
     n = X.shape[0]  # Number of observations
     p = X.shape[1]  # Number of features
@@ -275,30 +275,4 @@ def summary(clf, X, y, xlabels=None):
     print('F-statistic: {0:.2f} on {1} features'.format(
         f_stat(clf, X, y), ncols))
 
-
-def pcr_beta_coef(clf_regress, clf_pca):
-    """Calculate the beta coefficients in real-space (instead of PCA-space)
-    from principle components regression.
-
-    Parameters
-    ----------
-    clf_regress : sklearn.linear_model
-        A scikit-learn linear model classifier.
-    clf_pca : sklearn.decomposition.PCA
-        A scikit-learn PCA model.
-
-    Returns
-    -------
-    np.ndarray
-        An array of the real-space beta coefficients from principal components
-        regression.
-    """
-    # Ensure we only calculate coefficients using classifiers we have tested
-    assert isinstance(clf_regress, regressors.supported_linear_models), (
-        "Classifiers of type {0} not currently supported".format(type(clf_regress)))
-    assert isinstance(clf_pca, PCA), (
-        "Classifiers of type {0} are not supported. "
-        "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
-
-    return np.dot(clf_regress.coef_, clf_pca.components_)
 
