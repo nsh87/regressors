@@ -43,7 +43,6 @@ class PCR(object):
     regression_type : str
         The type of regression classifier to use. Must be one of 'ols',
         'lasso', 'ridge', or 'elasticnet'.
-
     n_jobs : int (optional)
         The number of jobs to use for the computation. If ``n_jobs=-1``, all
         CPUs are used. This will only increase speed of computation for
@@ -63,7 +62,7 @@ class PCR(object):
 
     Attributes
     ----------
-    scaler : sklearn.preprocessing.StandardScaler
+    scaler : sklearn.preprocessing.StandardScaler, None
         The StandardScaler object used to center the X data and scale to unit
         variance. Must have ``fit()`` and ``transform()`` methods.
         Can be overridden prior to fitting to use a different scaler::
@@ -73,6 +72,8 @@ class PCR(object):
             pcr.scaler = StandardScaler(with_mean=False, with_std=True)
             pcr.fit(X, y)
 
+        The scaler can also be removed prior to fitting (to not scale X during
+        fitting or predictions) with `pcr.scaler = None`.
     prcomp : sklearn.decomposition.PCA
         The PCA object use to perform PCA. This can also be accessed in the same
         way as the scaler.
@@ -126,12 +127,21 @@ class PCR(object):
         """
         return stats.pcr_beta_coef(self.regression, self.prcomp)
 
+    def fit(self, X, y):
+        if self.scaler is not None:
+            x_scaled = self.scaler.fit_transform(X)
+        else:
+            x_scaled = X
+        x_reduced = self.prcomp.fit_transform(x_scaled)
+        self.regression.fit(x_reduced, y)
 
-    def fit(self):
-        self.scaler
-
-    def predict(self):
-        pass
+    def predict(self, X):
+        if self.scaler is not None:
+            x_scaled = self.scaler.fit_transform(X)
+        else:
+            x_scaled = X
+        x_reduced = self.prcomp.transform(x_scaled)
+        self.regression.predict(x_reduced)
 
     def score(self):
         pass
