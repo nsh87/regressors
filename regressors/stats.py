@@ -275,7 +275,8 @@ def summary(clf, X, y, xlabels=None):
 
 
 def pcr_beta_coef(clf_regress, clf_pca):
-    """Calculate the beta coefficients in real-space (instead of PCA-space).
+    """Calculate the beta coefficients in real-space (instead of PCA-space)
+    from principle components regression.
 
     Parameters
     ----------
@@ -287,8 +288,8 @@ def pcr_beta_coef(clf_regress, clf_pca):
     Returns
     -------
     np.ndarray
-        An array of the real-space beta coefficients from Principal Components
-        Regression.
+        An array of the real-space beta coefficients from principal components
+        regression.
     """
     # Ensure we only calculate coefficients using classifiers we have tested
     assert isinstance(clf_regress, regressors.supported_linear_models), (
