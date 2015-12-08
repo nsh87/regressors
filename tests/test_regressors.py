@@ -16,7 +16,9 @@ import numpy as np
 import pandas as pd
 import unittest2 as unittest
 from sklearn import datasets
-from sklearn.decomposition import PCA
+from sklearn import decomposition
+from sklearn import preprocessing
+from sklearn import linear_model
 
 from regressors import regressors
 from regressors import stats
@@ -123,7 +125,7 @@ class TestStatsResiduals(unittest.TestCase):
 
     def test_classifier_type_assertion_raised(self):
         # Test that assertion is raised for unsupported model
-        pcomp = PCA()
+        pcomp = decomposition.PCA()
         pcomp.fit(X, y)
         with self.assertRaises(AttributeError):
             stats.residuals(pcomp, X, y)
@@ -293,6 +295,28 @@ class TestSummaryStats(unittest.TestCase):
                 self.fail("Testing summary function for "
                           "supported linear models failed "
                           "unexpectedly: {0}".format(e))
+
+class TestPCRBetaCoef(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_pcr_beta_coef_returns_coefs_for_all_predictors(self):
+        # Just return the coefficients for the predictors because the intercept
+        # for PCR is the same as the intercept in the PCA regression model.
+        scaler = preprocessing.StandardScaler()
+        x_scaled = scaler.fit_transform(X)
+        pcomp = decomposition.PCA()
+        pcomp.fit(x_scaled)
+        x_reduced = pcomp.transform(x_scaled)
+        ols = linear_model.LinearRegression()
+        ols.fit(x_reduced)
+        beta_coef = stats.pcr_beta_coef(ols, pcomp)
+        self.assertEqual(beta_coef.shape, ols.coef_.shape)
+
 
 if __name__ == '__main__':
     import sys
