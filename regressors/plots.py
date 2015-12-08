@@ -64,8 +64,8 @@ def plot_residuals(clf, X, y, r_type='standardized', figsize=(10, 8)):
     try:
         fig = plt.figure('residuals', figsize=figsize)
         plt.scatter(predictions, resids, s=14, c='gray', alpha=0.7)
-        plt.hlines(y=0, xmin=predictions.min(),
-                   xmax=predictions.max(), linestyle='dotted')
+        plt.hlines(y=0, xmin=predictions.min(), xmax=predictions.max(),
+                   linestyle='dotted')
         plt.title("Residuals Plot")
         plt.xlabel("Predictions")
         plt.ylabel(y_label[r_type])
@@ -107,8 +107,7 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
     # Ensure we have the a PCA model
     assert isinstance(clf, decomposition.PCA), (
         "Models of type {0} are not supported. Only models of type "
-        "sklearn.decomposition.PCA are supported.".format(type(clf))
-    )
+        "sklearn.decomposition.PCA are supported.".format(type(clf)))
     # Extract variances from the model
     variances = clf.explained_variance_ratio_
     # Set plot style and scale up font size
@@ -139,12 +138,10 @@ def plot_scree(clf, xlim=[-1, 10], ylim=[-0.1, 1.0], required_var=0.90,
             if xlim[1] <= required_var_components:
                 plt.xlim([xlim[0], required_var_components + 1])
             # Add the marker and legend to the plot
-            plt.axvline(x=required_var_components,
-                        c='r',
-                        linestyle='dashed',
-                        label="> {0:.0f}% Var. Explained: {1} components".format(
-                            required_var * 100, required_var_components)
-                        )
+            plt.axvline(x=required_var_components, c='r', linestyle='dashed',
+                        label="> {0:.0f}% Var. Explained: {1} "
+                              "components".format(required_var * 100,
+                            required_var_components))
             legend = plt.legend(loc='lower right', frameon=True)
             legend.get_frame().set_facecolor('#FFFFFF')
         plt.show()
@@ -199,10 +196,12 @@ def qq_plot(clf, X, y, figsize=(7, 7)):
     return fig
 
 
+def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
+                   diag='kde', legend_title=None):
+    """
+    Create pairwise plots of principal components from x data.
 
-def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2, diag='kde', legend_title=None):
-    """Create pairwise plots of principal components from x data.
-       Colors the components according to the y values.
+    Colors the components according to the y values.
 
     Parameters
     ----------
@@ -217,7 +216,8 @@ def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
     scaler : sklearn.preprocessing
         A scaler created to scale the data per the users' pre-specifications.
     facet_size: integer
-        Numerical value representing size (width) of each facet of the pairwise plot.
+        Numerical value representing size (width) of each facet of the
+        pairwise plot.
         Default is 2. Units are in inches.
     diag: string
         Type of plot to display on the diagonals. Default is 'kde'.
@@ -234,13 +234,13 @@ def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
     -------
     Displays a seaborn pairwise plot.
         More fancy plotting options here:
-        http://stanford.edu/~mwaskom/software/seaborn/generated/seaborn.pairplot.html
+        http://stanford.edu/~mwaskom/software/seaborn/generated/seaborn
+        .pairplot.html
     """
     if y is not None:
         assert y.shape[0] == x_train.shape[0], (
-            "Dimensions of y {0} do not match dimensions of x {1}".format(y.shape[0],
-                                                                          x_train.shape[0])
-        )
+            "Dimensions of y {0} do not match dimensions of x {1}".format(
+                y.shape[0], x_train.shape[0]))
 
     # Scale the data if the user passed in a scaler
     if scaler is not None:
@@ -251,7 +251,7 @@ def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
 
     # create Pandas dataframe for pairwise plot of PCA comps
     # using i+1 due to python's 0 listing.
-    col_names = ["PC{0}".format(i+1) for i in range(n_comps)]
+    col_names = ["PC{0}".format(i + 1) for i in range(n_comps)]
     df = pd.DataFrame(x_projection[:, 0:n_comps], columns=col_names)
 
     # display legend/colors according to user parameters
@@ -264,12 +264,3 @@ def plot_pca_pairs(clf_pca, x_train, n_comps, y=None, scaler=None, facet_size=2,
     # display the plot
     sns.set_style("white")
     sns.pairplot(df, hue=legend_title, diag_kind=diag, size=facet_size)
-
-    # if seaborn doesn't plot for you, try this below. Not as pretty, but it works.
-    # import matplotlib.pyplot as plt
-    # a = sns.pairplot(df, hue=legend_title, diag_kind=diag, size=facet_size)
-    # plt.show(a)
-
-
-
-
