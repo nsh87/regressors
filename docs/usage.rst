@@ -2,8 +2,8 @@
 Usage
 ========
 
-Below are some demonstrations of using Regressors in a project. We'll import a
-the Boston data set first to demonstrate the functions' usage::
+Below are some examples of using the functions in Regressors package.
+The Boston data set will be used for demonstration purposes::
 
     import numpy as np
     from sklearn import datasets
