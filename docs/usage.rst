@@ -19,7 +19,7 @@ Obtaining Summary Statistics
 There are several functions provided that compute various statistics
 about some of the regression models in scikit-learn. These functions are:
 
-    1. :py:func:`regressors.stats.sse(clf, X, y)`
+    1. `regressors.stats.sse(clf, X, y)`
     2. `regressors.stats.adj_r2_score(clf, X, y)`
     3. `regressors.stats.coef_se(clf, X, y)`
     4. `regressors.stats.coef_tval(clf, X, y)`
