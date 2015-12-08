@@ -186,7 +186,7 @@ def coef_pval(clf, X, y):
     """
     n = X.shape[0]
     t = coef_tval(clf, X, y)
-    p = 2 * (1 - sc.stats.t.cdf(abs(t), n - 1))
+    p = 2 * (1 - scipy.stats.t.cdf(abs(t), n - 1))
     return p
 
 
