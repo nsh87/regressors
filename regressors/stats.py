@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-"""This module contains functions for calculating various statistics."""
+"""This module contains functions for calculating various statistics and
+coefficients."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -10,6 +11,9 @@ import numpy as np
 import pandas as pd
 import scipy
 from sklearn import metrics
+from sklearn.decomposition import PCA
+
+from . import regressors
 
 
 def residuals(clf, X, y, r_type='standardized'):
@@ -225,6 +229,8 @@ def summary(clf, X, y, xlabels=None):
         Training data used to fit the classifier.
     y : numpy.ndarray
         Target training values, of shape = [n_samples].
+    xlabels : list, tuple
+        The labels for the predictors.
     """
     # Check and/or make xlabels
     ncols = X.shape[1]
@@ -268,3 +274,31 @@ def summary(clf, X, y, xlabels=None):
         metrics.r2_score(y, clf.predict(X)), adj_r2_score(clf, X, y)))
     print('F-statistic: {0:.2f} on {1} features'.format(
         f_stat(clf, X, y), ncols))
+
+
+def pcr_beta_coef(clf_regress, clf_pca):
+    """Calculate the beta coefficients in real-space (instead of PCA-space)
+    from principle components regression.
+
+    Parameters
+    ----------
+    clf_regress : sklearn.linear_model
+        A scikit-learn linear model classifier.
+    clf_pca : sklearn.decomposition.PCA
+        A scikit-learn PCA model.
+
+    Returns
+    -------
+    np.ndarray
+        An array of the real-space beta coefficients from principal components
+        regression.
+    """
+    # Ensure we only calculate coefficients using classifiers we have tested
+    assert isinstance(clf_regress, regressors.supported_linear_models), (
+        "Classifiers of type {0} not currently supported".format(type(clf_regress)))
+    assert isinstance(clf_pca, PCA), (
+        "Classifiers of type {0} are not supported. "
+        "Please use class sklearn.decomposition.PCA.".format(type(clf_pca)))
+
+    return np.dot(clf_regress.coef_, clf_pca.components_)
+
