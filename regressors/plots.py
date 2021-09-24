@@ -10,7 +10,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import scipy
-import seaborn.apionly as sns
+try:
+    import seaborn as sns
+except ImportError:
+    import seaborn.apionly as sns
 import statsmodels.api as sm
 from sklearn import decomposition
 
@@ -254,7 +257,10 @@ def plot_pca_pairs(clf_pca, x_train, y=None, n_components=3, diag='kde',
         # Pandas will create its own figure with a tight layout.
         fig = plt.figure(figsize=figsize)
         ax = fig.add_subplot(1, 1, 1)
-        from pandas.tools.plotting import scatter_matrix
+        try:
+            from pandas.tools.plotting import scatter_matrix
+        except ImportError:
+            from pandas.plotting import scatter_matrix
         axes = scatter_matrix(df, ax=ax, alpha=0.7, figsize=figsize,
                               diagonal=diag, marker='o', c=color,
                               density_kwds={'c': '#6283B9'},
