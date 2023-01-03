@@ -64,5 +64,4 @@ setup(
     ],
     test_suite='tests',
     tests_require=test_requirements,
-    use_2to3=True
 )
