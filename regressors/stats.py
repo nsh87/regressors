@@ -249,8 +249,16 @@ def summary(clf, X, y, xlabels=None):
         index=['_intercept'] + list(xlabels),
         columns=['Estimate', 'Std. Error', 't value', 'p value']
     )
-    coef_df['Estimate'] = np.concatenate(
-        (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6)))
+    try:
+        coef_df['Estimate'] = np.concatenate(
+            (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6))
+    except Exception as e:
+        coef_df['Estimate'] = np.concatenate(
+            (
+                np.round(np.array([clf.intercept_]), 6),
+                np.round((clf.coef_), 6)
+            ), axis = 1
+    )
     coef_df['Std. Error'] = np.round(coef_se(clf, X, y), 6)
     coef_df['t value'] = np.round(coef_tval(clf, X, y), 4)
     coef_df['p value'] = np.round(coef_pval(clf, X, y), 6)
