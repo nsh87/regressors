@@ -23,7 +23,7 @@ Install from GitHub
 
 Current versions are no longer on PyPi. You may install directly from GitHub with `pip` with whatever commit you choose. For example, on Python 3.10, install with the following:
 
-```sh
+```
 pip install git+https://github.com/nsh87/regressors.git@3a39e6aeb09953ccaeabec346f2eef324b7fcab9
 ```
 
