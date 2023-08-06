@@ -251,7 +251,7 @@ def summary(clf, X, y, xlabels=None):
     )
     try:
         coef_df['Estimate'] = np.concatenate(
-            (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6))
+            (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6)))
     except Exception as e:
         coef_df['Estimate'] = np.concatenate(
             (
