@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""This module contains functions for calculating various statistics and
-coefficients."""
+"""This module contains functions for calculating various statistics and coefficients."""
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -13,8 +12,8 @@ import scipy
 from sklearn import metrics
 from sklearn.decomposition import PCA
 
-from . import _utils
-
+# Removed the unused import
+# from . import _utils
 
 def residuals(clf, X, y, r_type='standardized'):
     """Calculate residuals or standardized residuals.
@@ -252,13 +251,14 @@ def summary(clf, X, y, xlabels=None):
     try:
         coef_df['Estimate'] = np.concatenate(
             (np.round(np.array([clf.intercept_]), 6), np.round((clf.coef_), 6))
+        )
     except Exception as e:
         coef_df['Estimate'] = np.concatenate(
             (
                 np.round(np.array([clf.intercept_]), 6),
                 np.round((clf.coef_), 6)
-            ), axis = 1
-    )
+            )
+        )
     coef_df['Std. Error'] = np.round(coef_se(clf, X, y), 6)
     coef_df['t value'] = np.round(coef_tval(clf, X, y), 4)
     coef_df['p value'] = np.round(coef_pval(clf, X, y), 6)
@@ -282,5 +282,3 @@ def summary(clf, X, y, xlabels=None):
         metrics.r2_score(y, clf.predict(X)), adj_r2_score(clf, X, y)))
     print('F-statistic: {0:.2f} on {1} features'.format(
         f_stat(clf, X, y), ncols))
-
-
